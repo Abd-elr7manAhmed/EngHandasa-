@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#7a1f2b">
+<meta name="description" content="دليل تفاعلي خطوة بخطوة لتمارين الرسم الهندسي">
+<title>هندسة</title>
+<style>
+:root{color-scheme:light;--bg:#f5f3f1;--fg:#242124;--mut:#777078;--ac:#7a1f2b;--card:#fff;--line:#e6dfe1;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#171416;--fg:#f5eff1;--mut:#b1a5aa;--ac:#d45a70;--card:#241e21;--line:#40353a}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,"Segoe UI",Tahoma,sans-serif;min-height:100%;-webkit-tap-highlight-color:transparent}
+body{transition:background .2s,color .2s}
+main{max-width:760px;margin:0 auto;padding:clamp(12px,3vw,22px)}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 14px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{display:grid;place-items:center;width:42px;height:42px;flex:none;border-radius:14px;background:#1f5fc4;overflow:hidden;box-shadow:0 5px 16px #1f5fc440}
+h1{font-size:clamp(17px,4vw,22px);margin:0;color:var(--fg);line-height:1.35}
+.subtitle{font-size:12px;color:var(--mut);margin-top:3px}
+.toolbtn{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:12px;padding:10px 12px;font-size:18px;cursor:pointer;min-width:44px;min-height:44px}
+.section-label{font-size:12px;font-weight:700;color:var(--mut);margin:14px 2px 7px}
+.chips{display:flex;gap:7px;overflow-x:auto;padding:2px 1px 9px;scrollbar-width:thin;scroll-snap-type:x proximity}
+.chips button{flex:none;scroll-snap-align:start;padding:10px 13px;border:1px solid var(--line);border-radius:13px;background:var(--card);color:var(--fg);font-size:13px;cursor:pointer;transition:background .15s,border-color .15s}
+.chips button.on{background:var(--ac);border-color:var(--ac);color:#fff;font-weight:700}
+button:focus-visible{outline:3px solid #c58a95;outline-offset:2px}
+.stage{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:8px;box-shadow:0 8px 28px #00000008}
+svg{width:100%;height:auto;background:var(--card);border-radius:12px;display:block;overflow:visible}
+.progress-head{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--mut);margin:12px 2px 7px}
+.progress-track{height:5px;background:var(--line);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:var(--ac);border-radius:99px;transition:width .25s}
+.dots{display:flex;gap:4px;margin:9px 0 0}.dots i{flex:1;min-width:2px;height:4px;border-radius:3px;background:var(--mut);opacity:.25}.dots i.on{background:var(--ac);opacity:1}
+.cap{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 15px;margin:12px 0;min-height:88px;line-height:1.85;font-size:15px}
+.cap b{color:var(--ac);display:block;margin-bottom:4px}
+.bar{display:grid;grid-template-columns:1fr 1.15fr 1fr;gap:8px}
+.bar button{min-height:46px;padding:11px 9px;border:0;border-radius:12px;background:var(--ac);color:#fff;font-size:14px;font-weight:650;cursor:pointer}
+.bar button.s{background:var(--card);border:1px solid var(--line);color:var(--fg)}
+.bar button:disabled{opacity:.4;cursor:not-allowed}
+.extras{display:flex;gap:8px;margin-top:9px}
+.extras button{flex:1;min-height:42px;border:1px solid var(--line);border-radius:11px;background:transparent;color:var(--fg);font-size:13px;cursor:pointer}
+.note{font-size:12.5px;color:var(--mut);margin-top:13px;line-height:1.8;background:var(--card);border:1px solid var(--line);padding:12px 13px;border-radius:13px}
+.note strong{color:var(--fg)}
+.el{opacity:0;transition:opacity .45s}.el.on{opacity:1}
+.draw{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1s}.draw.on{stroke-dashoffset:0}
+.k{fill:none;stroke:var(--mut);stroke-width:calc(var(--u)*.35)}
+.a{fill:none;stroke:var(--ac);stroke-width:calc(var(--u)*.9)}
+.o{fill:none;stroke:var(--fg);stroke-width:calc(var(--u)*1.3)}
+.h{fill:none;stroke:var(--fg);stroke-width:calc(var(--u)*.7)}
+.dot{fill:var(--ac)}
+.f .k{opacity:.2}.f .a{opacity:.25}
+text{fill:var(--fg);direction:ltr}
+@media(min-width:600px){.layout{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:16px;align-items:start}.side{position:sticky;top:12px}.chips{display:flex;flex-wrap:wrap;overflow:visible}.chips button{flex:1 1 42%}.cap{margin-top:0}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+.groups{flex-wrap:wrap;display:flex;gap:8px;margin:6px 0 4px}.groups button{flex:1;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--fg);font-size:15px;font-weight:700;cursor:pointer}.groups button.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.m3 .el,.m3 .draw{transition:none}.groups#gr button{flex:1 1 64px}
+.dim{opacity:0;pointer-events:none;transition:opacity .5s}.dims .dim.on{opacity:1}
+.dl{stroke:var(--dm,#2f6fb5);stroke-width:calc(var(--u)*.3);fill:none}.ar{fill:var(--dm,#2f6fb5)}
+.dt{fill:var(--dm,#2f6fb5);font-weight:600;paint-order:stroke;stroke:var(--card);stroke-width:calc(var(--u)*1.1);stroke-linejoin:round}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--dm:#7db4ef}}
+
+.screen{display:none}.screen.on{display:block}
+main{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:flex;gap:4px;background:var(--card);border-top:1px solid var(--line);padding:6px 10px calc(6px + env(safe-area-inset-bottom,0px));box-shadow:0 -8px 26px #00000012}
+.tabbar button{flex:1;max-width:200px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:2px;border:0;background:none;color:var(--mut);font-size:11.5px;font-weight:700;padding:6px 2px;border-radius:14px;cursor:pointer;min-height:54px}
+.tabbar .ic{font-size:21px;line-height:1.1;filter:grayscale(1);opacity:.7}
+.tabbar button.on{color:var(--ac);background:color-mix(in srgb,var(--ac) 11%,transparent)}.tabbar button.on .ic{filter:none;opacity:1}
+.figbar{display:flex;align-items:center;gap:8px;margin:0 0 10px}.figbar .t{flex:1;text-align:center;min-width:0}.figbar b{display:block;font-size:16px}.figbar small{color:var(--mut);font-size:12px}
+.figbar button{width:44px;height:44px;flex:none;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--fg);font-size:20px;cursor:pointer}
+h2{font-size:18px;margin:6px 2px 12px}
+.wk{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin:0 0 12px}.wkh{font-size:14px;font-weight:800;color:var(--ac);margin:0 2px 10px}
+.figs{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.figs button{display:flex;flex-direction:column;gap:3px;align-items:flex-start;text-align:start;padding:12px;border:1px solid var(--line);border-radius:13px;background:var(--bg);color:var(--fg);font-size:14px;font-weight:700;cursor:pointer}
+.figs button small{color:var(--mut);font-weight:500;font-size:11.5px}.figs button.on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 12%,var(--bg))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:4px 14px}
+.srow{padding:14px 0;border-bottom:1px solid var(--line)}.srow:last-child{border-bottom:0}.srow b{display:block;font-size:15px}.srow small{display:block;color:var(--mut);font-size:12px;margin:3px 0 10px}
+.resetb{width:100%;margin:12px 0 0;padding:13px;border:1px solid var(--line);border-radius:12px;background:transparent;color:var(--fg);font-size:14px;cursor:pointer}
+:root[data-theme="dark"]{--dm:#7db4ef}
+
+.stage{position:relative}
+.zoombar{position:absolute;inset-inline-end:14px;bottom:14px;display:flex;flex-direction:column;gap:6px}
+.zoombar button{width:38px;height:38px;border:1px solid var(--line);border-radius:11px;background:color-mix(in srgb,var(--card) 92%,transparent);color:var(--fg);font-size:18px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px #0000001a;padding:0}
+.donebtn{display:inline-block;margin-top:4px;padding:3px 12px;border:1px solid var(--line);border-radius:20px;background:transparent;color:var(--mut);font-size:12px;font-weight:700;cursor:pointer}
+.donebtn.on{background:color-mix(in srgb,#2e9e5b 16%,transparent);border-color:#2e9e5b;color:#2e9e5b}
+.figs button{position:relative}.figs button .ck{display:none;position:absolute;top:8px;inset-inline-end:8px;width:20px;height:20px;border-radius:50%;background:#2e9e5b;color:#fff;font-style:normal;font-size:12px;line-height:20px;text-align:center}
+.figs button.done .ck{display:block}
+.wkc{float:inline-end;color:var(--mut);font-weight:600}
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:#000a;padding:16px}.modal.on{display:flex}
+.mbox{background:var(--card);border-radius:18px;padding:14px;max-width:560px;width:100%;max-height:92vh;overflow:auto;text-align:center}
+.mbox h3{margin:2px 0 10px;font-size:16px}.mbox img{width:100%;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+.mbox p{color:var(--mut);font-size:12.5px;margin:10px 0}.mbox .row{display:flex;gap:8px}.mbox .row a,.mbox .row button{flex:1;padding:12px;border:1px solid var(--line);border-radius:12px;background:transparent;color:var(--fg);font-size:14px;text-decoration:none;cursor:pointer}
+.mbox .row a{background:var(--ac);color:#fff;border-color:var(--ac)}
+.figbar .donebtn{width:auto;height:auto;font-size:12px;border-radius:20px;padding:3px 12px;margin-top:5px;cursor:pointer;color:var(--mut)}.figbar .donebtn.on{color:#2e9e5b}
+svg#s{overflow:hidden}.stage{overflow:hidden}.figbar .donebtn{display:block;margin:5px auto 0}
+.side .cap{margin:12px 0 0}
+.side{margin-top:18px}@media(min-width:600px){.side{margin-top:0}}
+.primaryb{width:100%;padding:13px;border:0;border-radius:12px;background:var(--ac);color:#fff;font-size:15px;font-weight:700;cursor:pointer}.dlmsg{display:block;min-height:18px;margin-top:8px;font-size:12.5px;color:var(--mut)}
+.x{fill:none;stroke:var(--fg);stroke-width:calc(var(--u)*.6)}
+</style><link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#1f5fc4">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="هندسة">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+</head><body><main>
+<header>
+  <div class="brand"><div class="logo" aria-hidden="true"><svg viewBox="0 0 48 48" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="lgc"><rect width="48" height="48" rx="14"/></clipPath></defs><g clip-path="url(#lgc)"><rect width="48" height="48" fill="#1f5fc4"/><rect x="3.0" y="0" width="1.2" height="48" fill="#fff" opacity=".9"/><rect x="9.0" y="0" width="1.2" height="48" fill="#fff" opacity=".9"/><rect x="15.0" y="0" width="1.2" height="48" fill="#fff" opacity=".9"/><rect x="21.0" y="0" width="1.2" height="48" fill="#fff" opacity=".9"/><rect x="27.0" y="0" width="1.2" height="48" fill="#fff" opacity=".9"/><rect x="33.0" y="0" width="1.2" height="48" fill="#fff" opacity=".9"/><rect x="39.0" y="0" width="1.2" height="48" fill="#fff" opacity=".9"/><rect x="45.0" y="0" width="1.2" height="48" fill="#fff" opacity=".9"/><rect x="0" y="5.0" width="48" height="0.8" fill="#fff" opacity=".3"/><rect x="0" y="13.0" width="48" height="0.8" fill="#fff" opacity=".3"/><rect x="0" y="21.0" width="48" height="0.8" fill="#fff" opacity=".3"/><rect x="0" y="29.0" width="48" height="0.8" fill="#fff" opacity=".3"/><rect x="0" y="37.0" width="48" height="0.8" fill="#fff" opacity=".3"/><rect x="0" y="45.0" width="48" height="0.8" fill="#fff" opacity=".3"/></g><ellipse cx="24" cy="40" rx="15" ry="2" fill="#0b3a85" opacity=".35"/><path d="M4.5 32.5C4.5 29.8 12 28.5 24 28.5s19.5 1.3 19.5 4-7.5 4.5-19.5 4.5S4.5 35.3 4.5 32.5z" fill="#f2a900" stroke="#9a6a00" stroke-width="1.2" stroke-linejoin="round"/><path d="M8.5 31C8.5 18.5 15 10.5 24 10.5S39.5 18.5 39.5 31c0 1.4-3.6 2.1-15.5 2.1S8.5 32.4 8.5 31z" fill="#ffd21f" stroke="#9a6a00" stroke-width="1.2" stroke-linejoin="round"/><path d="M20 32.6V15.5C20 11.8 21.7 9.4 24 9.4s4 2.4 4 6.1v17.1z" fill="#ffbb00" stroke="#9a6a00" stroke-width="1.1" stroke-linejoin="round"/><path d="M15.5 31.6C14.8 24 16.5 17.5 20 13.6M32.5 31.6C33.2 24 31.5 17.5 28 13.6" fill="none" stroke="#d99700" stroke-width="1" stroke-linecap="round"/><path d="M11.8 25C12.4 19.8 15 15.6 18.6 13.4" fill="none" stroke="#fff4a8" stroke-width="1.9" stroke-linecap="round"/><path d="M10 31.2c4 1.6 24 1.6 28 0" fill="none" stroke="#9a6a00" stroke-width="1" stroke-linecap="round"/></svg></div><div><h1 data-i="app">هندسة</h1><div class="subtitle" data-i="sub">شرح تفاعلي خطوة بخطوة</div></div></div>
+</header>
+<div id="tab-draw" class="screen on">
+<div class="figbar"><button id="figPrev" type="button" aria-label="الرسمة السابقة">→</button><div class="t"><b id="figName"></b><small id="figCount"></small><button id="doneBtn" class="donebtn" type="button"></button></div><button id="figNext" type="button" aria-label="الرسمة التالية">←</button></div>
+<div class="layout">
+  <section>
+    <div class="stage"><svg id="s" role="img" aria-label="رسم هندسي توضيحي"></svg><div class="zoombar"><button id="zIn" type="button">+</button><button id="zOut" type="button">−</button><button id="zRes" type="button">⤢</button></div></div>
+    <div class="progress-head"><span id="stepLabel">الخطوة 1</span><span id="percent">0%</span></div>
+    <div class="progress-track" role="progressbar" aria-label="تقدم خطوات التمرين" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-fill" id="progress"></div></div>
+    <div class="dots" id="d" aria-hidden="true"></div>
+  </section>
+  <aside class="side">
+    <div class="bar"><button class="s" id="p" type="button">→ السابق</button><button id="pl" type="button">إيقاف العرض</button><button class="s" id="n" type="button">التالي ←</button></div>
+    <div class="extras"><button id="restart" type="button" data-i="restart">↺ إعادة من البداية</button><button id="auto" type="button">▶ عرض تلقائي</button><button id="shot" type="button" data-i="shot">📷 حفظ صورة</button></div>
+  
+    <div class="cap" id="c" aria-live="polite"></div>
+  </aside>
+</div>
+<div class="note" id="noteDraw"><strong>مفتاح الرسم:</strong> الخطوط الرمادية = خطوط إنشاء (Construction)، الأحمر = الأقواس/الخطوط المساعدة المميزة، والأسود = الشكل النهائي. القيم بالمليمتر وبمقياس 1:1؛ في CW2 اضرب كل رقم × 2 حسب الملاحظة الأصلية للمادة.</div>
+</div>
+<div id="tab-cw" class="screen"><h2>Classwork · CW</h2><div id="listCW"></div></div>
+<div id="tab-hw" class="screen"><h2>Homework · HW</h2><div id="listHW"></div></div>
+<div id="tab-set" class="screen"><h2 data-i="setH">Settings · الإعدادات</h2>
+<div class="card">
+<div class="srow"><b data-i="lng">اللغة</b><small data-i="lngd">لغة التطبيق والشرح (العربية من اليمين لليسار)</small><div class="groups" id="lng"><button type="button" data-l="ar">العربية</button><button type="button" data-l="en">English</button></div></div>
+<div class="srow"><b data-i="thm">المظهر</b><small data-i="thmd">الإضاءة: فاتح أو داكن أو حسب الجهاز</small><div class="groups" id="thm"><button type="button" data-t="auto" data-i="thmA">تلقائي</button><button type="button" data-t="light" data-i="thmL">☀ فاتح</button><button type="button" data-t="dark" data-i="thmD">☾ داكن</button></div></div>
+<div class="srow"><b data-i="md">وضع الرسم</b><small data-i="mdd">2D شرح عادي، 3D أدوات رسم (برجل ومسطرة وقلم) بترسم قدامك</small><div class="groups" id="md"><button type="button" data-m="2d" data-i="md2">2D · عادي</button><button type="button" data-m="3d" data-i="md3">3D · أدوات الرسم</button></div></div>
+<div class="srow"><b data-i="dmb">المقاسات</b><small data-i="dmbd">إظهار أنصاف الأقطار والأقطار والمسافات على الرسمة</small><div class="groups" id="dmb"><button type="button" data-d="0" data-i="dmH">إخفاء المقاسات</button><button type="button" data-d="1" data-i="dmS">إظهار المقاسات</button></div></div>
+<div class="srow"><b data-i="spd">سرعة العرض التلقائي</b><small data-i="spdd">سرعة الانتقال بين الخطوات وسرعة الأدوات في 3D</small><div class="groups" id="spd"><button type="button" data-s="slow" data-i="spS">بطيء</button><button type="button" data-s="normal" data-i="spN">عادي</button><button type="button" data-s="fast" data-i="spF">سريع</button></div></div>
+<div class="srow"><b data-i="prj">نظام الإسقاط</b><small data-i="prjd">للأسبوع 4: الزاوية الأولى (الأمامي فوق، العلوي تحته، والجانبي الأيسر على يمينه) أو الثالثة.</small><div class="groups" id="prj"><button type="button" data-p="first" data-i="prj1">الزاوية الأولى</button><button type="button" data-p="third" data-i="prj3">الزاوية الثالثة</button></div></div>
+<div class="srow"><b data-i="progH">تقدمك</b><small id="progD"></small><button class="resetb" id="resetP" type="button" data-i="resetP" style="margin-top:0">مسح التقدم</button></div>
+<div class="srow" id="installRow" style="display:none"><b id="instT"></b><small id="instD"></small><button class="primaryb" id="installBtn" type="button" style="display:none"></button></div>
+<div class="srow"><b data-i="dlApp">تنزيل البرنامج</b><small data-i="dlAppD">نسخة كاملة تشتغل بدون إنترنت: ملف واحد تفتحه من أي متصفح.</small><button class="primaryb" id="dlAppBtn" type="button" data-i="dlAppB">⬇ تنزيل البرنامج</button><span class="dlmsg" id="dlMsg" aria-live="polite"></span></div>
+</div>
+<button class="resetb" id="resetS" type="button" data-i="reset">↺ إعادة ضبط الإعدادات</button>
+<div class="note" id="noteSet"><strong>Engineering Drawing</strong><br>الإعدادات بتتحفظ تلقائيًا على جهازك. الرسمات بتتفتح من CW أو HW وتظهر في Draw.</div>
+</div>
+<div class="modal" id="modal" role="dialog" aria-modal="true"><div class="mbox"><h3 data-i="saveH">حفظ الصورة</h3><img id="mimg" alt=""><p id="mhint"></p><div class="row"><a id="mdl" download="engineering-drawing.png" data-i="dl">⬇ تنزيل</a><button id="mclose" type="button" data-i="close">إغلاق</button></div></div></div>
+<nav class="tabbar" aria-label="التنقل الرئيسي"><button type="button" data-tab="draw"><span class="ic">📐</span>Draw</button><button type="button" data-tab="cw"><span class="ic">📘</span>CW</button><button type="button" data-tab="hw"><span class="ic">📝</span>HW</button><button type="button" data-tab="set"><span class="ic">⚙️</span>Settings</button></nav>
+<script>
+const D=Math.PI/180,K='k',A='a',O='o',H='h',X='x';
+const add=(a,b)=>[a[0]+b[0],a[1]+b[1]],sub=(a,b)=>[a[0]-b[0],a[1]-b[1]],mul=(a,s)=>[a[0]*s,a[1]*s],len=v=>Math.hypot(v[0],v[1]),ang=v=>Math.atan2(v[1],v[0])/D;
+const on=(c,r,p)=>add(c,mul(sub(p,c),r/len(sub(p,c))));
+const mir=(p,x,y)=>[p[0]*x,p[1]*y];
+function inter(c1,r1,c2,r2){const v=sub(c2,c1),dd=len(v),aa=(r1*r1-r2*r2+dd*dd)/(2*dd),hh=Math.sqrt(r1*r1-aa*aa),u=mul(v,1/dd),b=add(c1,mul(u,aa)),q=[-u[1]*hh,u[0]*hh];return[add(b,q),sub(b,q)]}
+function pts(c,r,a0,a1){if(a1<a0)a1+=360;const o=[];for(let q=a0;q<=a1;q+=1)o.push([c[0]+r*Math.cos(q*D),c[1]+r*Math.sin(q*D)]);o.m={c,r};return o}
+const c=(p,r,k=K)=>({t:'c',p,r,k}),P=(q,k=A)=>({t:'p',q,k}),a=(p,r,a0,a1,k=A)=>P(pts(p,r,a0,a1),k),l=(p,q,k=K)=>P([p,q],k),d=p=>({t:'d',p}),tx=(p,s)=>({t:'t',p,s});
+const M=(it,x,y)=>it.t=='p'?(()=>{const nq=it.q.map(p=>mir(p,x,y));if(it.q.m)nq.m={c:mir(it.q.m.c,x,y),r:it.q.m.r};return P(nq,it.k)})():it.t=='c'?c(mir(it.p,x,y),it.r,it.k):it.t=='d'?d(mir(it.p,x,y)):it;
+const X2=[[1,1],[-1,1]],Y2=[[1,1],[1,-1]],Q4=[[1,1],[-1,1],[1,-1],[-1,-1]];
+const MM=(its,ls)=>[].concat(...its.map(it=>ls.map(([x,y])=>M(it,x,y))));
+const rotP=(p,deg)=>{const a=deg*D,cc=Math.cos(a),ss=Math.sin(a);return[p[0]*cc-p[1]*ss,p[0]*ss+p[1]*cc]};
+const rotItems=(its,deg)=>its.map(it=>{if(it.t=='c')return c(rotP(it.p,deg),it.r,it.k);if(it.t=='d')return d(rotP(it.p,deg));if(it.t=='p'){const q=it.q.map(p=>rotP(p,deg));if(it.q.m)q.m={c:rotP(it.q.m.c,deg),r:it.q.m.r};return P(q,it.k)}return it});
+const F=[];const fig=(n,vb,st,fade=true)=>F.push({n,vb,st,fade});
+const figR=(deg,n,vb,st,fade=true)=>fig(n,vb,st.map(x=>[x[0],x[1],rotItems(x[2],deg)]),fade);
+const ax=(r)=>[l([-r,0],[r,0]),l([0,-r],[0,r])];
+
+// ---- CW1 Fig4
+{const up=[[20,60],[40,40],[60,20]].map(([x,R])=>a([x,0],R,0,180)),lo=[[-60,20],[-40,40],[-20,60]].map(([x,R])=>a([x,0],R,180,360));
+fig('CW1 · Fig.4',[-88,-88,88,88],[
+['القطر والدايرة الكبيرة','ارسم قطر أفقي طوله 160 ودايرة R80 (Ø160) مركزها O في نصه. طرفي القطر: A (يسار) وB (يمين).',[c([0,0],80,H),l([-88,0],[88,0]),l([0,-85],[0,85]),d([0,0]),d([-80,0]),d([80,0])]],
+['مراكز الأقواس','مراكز الأقواس العلوية على يمين O عند +20 و+40 و+60. مراكز الأقواس السفلية على يسار O عند -20 و-40 و-60.',[20,40,60,-20,-40,-60].map(x=>d([x,0]))],
+['فوق: R60','مركز +20، فتحة 60، نص دايرة فوق القطر (من -40 لـ B).',[c([20,0],60),up[0]]],
+['فوق: R40','مركز +40، فتحة 40، نص دايرة فوق القطر (من O لـ B).',[c([40,0],40),up[1]]],
+['فوق: R20','مركز +60، فتحة 20، نص دايرة فوق القطر (من +40 لـ B).',[up[2]]],
+['تحت: R20','مركز -60، فتحة 20، نص دايرة تحت القطر (من A لـ -40).',[lo[0]]],
+['تحت: R40','مركز -40، فتحة 40، نص دايرة تحت القطر (من A لـ O).',[c([-40,0],40),lo[1]]],
+['تحت: R60','مركز -20، فتحة 60، نص دايرة تحت القطر (من A لـ +40).',[c([-20,0],60),lo[2]]],
+['الشكل النهائي','قوّي الدايرة R80 وكل الأقواس الستة.',[P(pts([0,0],80,0,360),O),...up.map(x=>P(x.q,O)),...lo.map(x=>P(x.q,O))]]]);}
+
+// ---- HW1 Fig1
+{const C1=[0,0],C2=[67.5,0],C3=[120,0];
+fig('HW1 · Fig.1',[-48,-50,152,50],[
+['خط المراكز','ارسم خط أفقي وعلّم المركز الأول.',[l([-48,0],[150,0]),d(C1)]],
+['الحلقة الأولى','داخلية Ø60 (R30) وخارجية Ø90 (R45) — السُمك 15.',[c(C1,30,H),c(C1,45,K)]],
+['الحلقة التانية','الدايرة الخارجية R37.5 مماسة للدايرة الداخلية للأولى من برّه: المسافة بين المركزين = 30+37.5 = 67.5. بعدها الداخلية R22.5.',[a(C1,67.5,-15,15,K),d(C2),c(C2,37.5,K),c(C2,22.5,H)]],
+['الحلقة التالتة','الخارجية R30 مماسة للداخلية التانية: المسافة = 22.5+30 = 52.5 من مركز التانية. بعدها الداخلية R15.',[a(C2,52.5,-15,15,K),d(C3),c(C3,30,K),c(C3,15,H)]],
+['الشكل النهائي','امسح الجزء اللي جوه الحلقة اللي بعدها من كل دايرة خارجية (بيتقطعوا عند التقاطع)، وقوّي الباقي.',[c(C1,30,O),c(C2,22.5,O),c(C3,15,O),a(C1,45,31.6,328.4,O),a(C2,37.5,34,326,O),c(C3,30,O)]]]);}
+
+// ---- HW1 Fig2
+{const pc=[0,1,2,3,4,5].map(k=>[40*Math.cos(k*60*D),40*Math.sin(k*60*D)]);
+fig('HW1 · Fig.2',[-90,-90,90,90],[
+['الدايرة المساعدة','ارسم محورين ودايرة مساعدة Ø80 (R40) من O.',[...ax(85),c([0,0],40,H),d([0,0])]],
+['قسّم الدايرة','حط الفرجار على الدايرة وافتحه 40 (نفس نصف القطر) وقسّمها 6 أجزاء متساوية (60° لكل جزء). كل نقطة = مركز دايرة.',[...pc.map(p=>l([0,0],p)),...pc.map(p=>d(p))]],
+['الدواير الست','حط الفرجار على كل نقطة وافتحه 40 وارسم دايرة كاملة (كلها بتعدّي بالمركز O).',pc.map(p=>c(p,40,K))],
+['الشكل النهائي','في كل دايرة امسح القوس اللي جوه الدايرة اللي قبلها (120°) وقوّي الباقي (240°).',pc.map((C,k)=>a(C,40,60*k-60,60*k+180,O))]]);}
+
+// ---- Lettering
+const GL=(()=>{const el=(cx,cy,rx,ry,a0,a1,n=14)=>{const o=[];for(let i=0;i<=n;i++){const t=(a0+(a1-a0)*i/n)*D;o.push([cx+rx*Math.cos(t),cy+ry*Math.sin(t)])}return o};
+const Pp=[[0,0],[0,10],[3.2,10],...el(3.2,7.5,2.8,2.5,90,-90,10),[0,5]];
+return{A:{w:6,s:[[[0,0],[3,10],[6,0]],[[1.2,4],[4.8,4]]]},C:{w:6,s:[el(3,5,3,5,40,320,18)]},D:{w:6,s:[[[0,0],[0,10],[2.5,10],...el(2.5,5,3.5,5,90,-90,14),[0,0]]]},
+E:{w:6,s:[[[6,10],[0,10],[0,0],[6,0]],[[0,5],[4.5,5]]]},F:{w:6,s:[[[6,10],[0,10],[0,0]],[[0,5],[4.5,5]]]},G:{w:6,s:[[...el(3,5,3,5,40,360,18),[3.4,5]]]},
+H:{w:6,s:[[[0,0],[0,10]],[[6,0],[6,10]],[[0,5],[6,5]]]},I:{w:0,s:[[[0,0],[0,10]]]},L:{w:5,s:[[[0,10],[0,0],[5,0]]]},M:{w:7,s:[[[0,0],[0,10],[3.5,3],[7,10],[7,0]]]},
+N:{w:6,s:[[[0,0],[0,10],[6,0],[6,10]]]},O:{w:7,s:[el(3.5,5,3.5,5,0,360,28)]},P:{w:6,s:[Pp]},R:{w:6,s:[Pp,[[3,5],[6,0]]]},
+S:{w:6,s:[[...el(3,7.5,2.8,2.5,25,270,10),...el(3,2.5,3,2.5,90,-155,10)]]},T:{w:6,s:[[[0,10],[6,10]],[[3,10],[3,0]]]},U:{w:6,s:[[[0,10],[0,3],...el(3,3,3,3,180,360,12),[6,10]]]},
+V:{w:6,s:[[[0,10],[3,0],[6,10]]]},W:{w:8,s:[[[0,10],[2,0],[4,8],[6,0],[8,10]]]}}})();
+const word=(txt,x0,y0,sc,k)=>{let x=x0;const it=[];for(const ch of txt){if(ch===' '){x+=5*sc;continue}const g=GL[ch];if(!g)continue;g.s.forEach(st=>it.push(P(st.map(p=>[x+p[0]*sc,y0+p[1]*sc]),k)));x+=(g.w+2.2)*sc}return{it,x}};
+{const g1=[l([-6,0],[100,0],K),l([-6,10],[100,10],K)],g2=[l([-6,-20],[100,-20],K),l([-6,-10],[100,-10],K)];
+fig('CW1 · تمرين 1',[-10,-26,102,18],[
+['خطوط الإرشاد','ارسم خطين أفقيين خفيفين بينهم 10 مم (ارتفاع الحرف) بقلم 2H، واترك 10 مم تقريبًا بين السطور.',[...g1,...g2]],
+['نسب الحرف','عرض الحرف حوالي ⅔ الارتفاع (6 مم)، والمسافة بين الحروف حوالي 2 مم، وبين الكلمات 6–8 مم. الحروف I وM وW استثناء.',[P([[0,0],[6,0],[6,10],[0,10],[0,0]],K),l([6,0],[8.2,0],A),l([6,10],[8.2,10],A)]],
+['كلمة PLAN','اكتب الحروف رأسية (من غير ميل) بخط ثابت السُمك. ابدأ بالخطوط الرأسية وبعدين المائلة والمنحنية.',word('PLAN',0,0,1,O).it],
+['كلمة ELEVATION','كرر في السطر التاني، وراجع المسافات بين الحروف بالعين: لازم تبان متساوية.',word('ELEVATION',0,-20,1,O).it]],false);}
+{const sc=.7,g1=[l([-5,0],[105,0],K),l([-5,7],[105,7],K)],w1=word('ENGINEERING',0,0,sc,O),w2=word('DRAWING',w1.x+6*sc,0,sc,O);
+fig('HW1 · تمرين 1',[-8,-6,108,13],[
+['خطوط الإرشاد 7 مم','ارسم خطين أفقيين بينهم 7 مم لكل سطر، وسيب مسافة بين السطور.',g1],
+['نسب الحرف','عرض الحرف حوالي 4.5 مم، المسافة بين الحروف 1.5 مم، وبين الكلمات 4–5 مم.',[P([[0,0],[4.2,0],[4.2,7],[0,7],[0,0]],K)]],
+['الكلمة الأولى','اكتب ENGINEERING على الخطين بحروف رأسية.',w1.it],
+['الكلمة التانية','سيب مسافة بين الكلمتين واكتب DRAWING. احسب طول السطر قبل ما تبدأ عشان الجملة تتناسب مع عرض الورقة.',w2.it]],false);}
+
+// ---- CW2 Fig1
+{const T=[0,52],Cr=[20,7],Cl=[-20,7];
+const Pr=inter(Cr,32,T,37).sort((p,q)=>q[0]-p[0])[0],tT=on(T,12,Pr),tC=on(Cr,7,Pr);
+const aT=ang(sub(tT,Pr)),aC=ang(sub(tC,Pr)),aR=ang(sub(tT,T)),aK=ang(sub(tC,Cr));
+const fil=a(Pr,25,aT,aC),mx=it=>M(it,-1,1);
+fig('CW2 · Fig.1',[-40,-8,40,68],[
+['القاعدة والمحور','ارسم محور رأسي وخط القاعدة الأفقي.',[l([0,-5],[0,65]),l([-35,0],[35,0])]],
+['دايرتين R7','على ارتفاع 7 فوق القاعدة علّم مركزين بينهم 40 (±20) وارسم R7 — مماسة للقاعدة.',[c(Cr,7,K),c(Cl,7,K),d(Cr),d(Cl)]],
+['الدايرة العلوية','المركز على المحور 45 فوق خط مراكز R7. ارسم Ø24 (R12).',[d(T),c(T,12,K)]],
+['مركز R25','قوس 12+25 = 37 من مركز العلوية، وقوس 7+25 = 32 من مركز R7. تقاطعهم = مركز R25.',[a(T,37,ang(sub(Pr,T))-12,ang(sub(Pr,T))+12),a(Cr,32,ang(sub(Pr,Cr))-12,ang(sub(Pr,Cr))+12),d(Pr),M(a(T,37,ang(sub(Pr,T))-12,ang(sub(Pr,T))+12),-1,1),M(a(Cr,32,ang(sub(Pr,Cr))-12,ang(sub(Pr,Cr))+12),-1,1),d([-Pr[0],Pr[1]])]],
+['أقواس R25','من المركز ارسم R25 بين نقطتي التماس (الغاطس لجوه). كرر على الجهة التانية.',[c(Pr,25),fil,mx(fil),c([-Pr[0],Pr[1]],25)]],
+['الشكل النهائي','امسح الزيادة وقوّي: العلوية R12، أقواس R25، أطراف R7، والقاعدة.',[a(T,12,aR,180-aR,O),P(fil.q,O),mx(P(fil.q,O)),a(Cr,7,-90,aK,O),a(Cl,7,180-aK,270,O),l([-20,0],[20,0],O)]]]);}
+
+// ---- CW2 Fig2
+{const Cu=[0,23],Oc=[Math.sqrt(27*27-23*23),0];
+const R5=inter(Oc,25,Cu,18).sort((p,q)=>p[0]-q[0])[0],t30=on(Oc,30,R5),t13=on(Cu,13,R5),aTop=ang(sub(Cu,Oc));
+const my=it=>M(it,1,-1);
+const o40=a(Oc,40,aTop,360-aTop,O),o30=a(Oc,30,ang(sub(t30,Oc)),360-ang(sub(t30,Oc)),O);
+const l13=a(Cu,13,ang(sub(t13,Cu)),aTop,O),a5=a(R5,5,ang(sub(t13,R5)),ang(sub(t30,R5)),O);
+fig('CW2 · Fig.2',[-35,-42,30,42],[
+['المحاور','ارسم محور أفقي ومحور رأسي.',[l([-30,0],[25,0]),l([0,-40],[0,40])]],
+['دايرتين R13','على الرأسي علّم مركزين بينهم 46 (±23) وارسم R13.',[c(Cu,13,K),c([0,-23],13,K),d(Cu),d([0,-23])]],
+['مركز R40 وR30','قوس نصف قطره 40−13 = 27 من مركز R13 يقطع المحور الأفقي في O′ (14.1 يمين الرأسي).',[a(Cu,27,-70,-45),my(a(Cu,27,-70,-45)),d(Oc)]],
+['R40 وR30','من O′ ارسم R40 (خارجي) وR30 (داخلي).',[a(Oc,40,aTop,360-aTop,A),a(Oc,30,150,210,A)]],
+['قوس R5','مركزه على بُعد 30−5 = 25 من O′ وعلى بُعد 13+5 = 18 من مركز R13. ارسمه بين R30 وR13 (وكرره تحت).',[a(Oc,25,150,175),a(Cu,18,-110,-60),d(R5),d([R5[0],-R5[1]]),a(R5,5,ang(sub(t13,R5)),ang(sub(t30,R5)),A),my(a(R5,5,ang(sub(t13,R5)),ang(sub(t30,R5)),A))]],
+['الشكل النهائي','قوّي: R40، R30، R5، ودايرتي R13 من برّه.',[o40,o30,l13,my(l13),a5,my(a5)]]]);}
+
+// ---- HW2 Fig1
+{const rs=42,Lc=[80,0],rp=(p,k)=>{const q=120*k*D,cc=Math.cos(q),ss=Math.sin(q);return[p[0]*cc-p[1]*ss,p[0]*ss+p[1]*cc]};
+const x1=((40+rs)**2-(14+rs)**2+6400)/160,P1=[x1,-Math.sqrt((40+rs)**2-x1*x1)],Q=rp(P1,1);
+const cs=inter(Lc,50,Q,64+rs),P2=len(cs[0])<len(cs[1])?cs[0]:cs[1],J=on(P2,64,Q),J0=rp(J,-1);
+const lobe=pts(Lc,14,ang(sub(P1,Lc)),ang(sub(Lc,P2))),r42=pts(P1,rs,ang(sub(Lc,P1)),ang(sub(J0,P1))),r64=pts(P2,64,ang(sub(Lc,P2)),ang(sub(J,P2)));
+const R=(q,k)=>{const o=q.map(p=>rp(p,k));if(q.m)o.m={c:rp(q.m.c,k),r:q.m.r};return o},K3=[0,1,2];
+let out=[];K3.forEach(k=>{out=out.concat(R(lobe,k),R(r64,k),R(r42,k+1).slice().reverse())});
+const w=(it,k)=>P(R(it.q,k),it.k),near=(cen,r,an)=>a(cen,r,an-12,an+12,K);
+figR(90,'HW2 · Fig.1',[-100,-100,100,100],[
+['المحاور','ارسم محورين متعامدين.',ax(98)],
+['دايرة Ø160','دايرة R80 من O بخط متقطع — عليها مراكز الفصوص.',[c([0,0],80,K),d([0,0])]],
+['مراكز الفصوص','3 خطوط من O بزاوية 120° بين كل واحد والتاني. التقاطع مع الدايرة = مراكز الفصوص.',[...K3.map(k=>l([0,0],rp([98,0],k))),...K3.map(k=>d(rp(Lc,k)))]],
+['الدواير الداخلية','ارسم Ø35 وØ52 وØ80.',[17.5,26,40].map(r=>c([0,0],r,H))],
+['فصوص R14','حول كل مركز ارسم دايرة R14.',K3.map(k=>c(rp(Lc,k),14,H))],
+['مركز R42','قوس 40+42 = 82 من O، وقوس 14+42 = 56 من مركز الفص. التقاطع = مركز R42.',K3.flatMap(k=>[a([0,0],82,ang(P1)-12+120*k,ang(P1)+12+120*k,K),near(rp(Lc,k),56,ang(sub(P1,Lc))+120*k),d(rp(P1,k)),w(P(r42,A),k)])],
+['مركز R64','قوس 64−14 = 50 من مركز الفص، وقوس 64+42 = 106 من مركز R42 المجاور. التقاطع = مركز R64.',K3.flatMap(k=>[near(rp(Lc,k),50,ang(sub(P2,Lc))+120*k),near(rp(Q,k),106,ang(sub(P2,Q))+120*k),d(rp(P2,k)),w(P(r64,A),k)])],
+['الشكل النهائي','امسح الزيادة وقوّي الحدود الخارجية. الدواير الثلاثة تفضل بخط متوسط.',[P(out.concat([out[0]]),O)]]]);}
+
+// ---- HW2 Fig2
+{const n=[0.4,Math.sqrt(.84)],K1=[50,50],t1=add([0,50],mul(n,40)),t2=add(K1,mul(n,20));
+const Rc=[50+Math.sqrt(74*74-2500),0],tp=on(K1,20,Rc),aR=ang(sub(tp,Rc)),aK1=ang(sub(tp,K1)),aK2=ang(n),sl=50-Math.sqrt(500);
+const corner=a(K1,20,aK1,aK2,O),top=a([0,50],40,aK2,180-aK2,O),tl=l(t1,t2,O),r54=a(Rc,54,aR,360-aR,O);
+const sline=l([20,-sl],[20,sl],O),big=a([0,50],30,-48.2,228.2,O);
+fig('HW2 · Fig.2',[-82,-100,82,100],[
+['المحاور والمربع','مربع مراكز 100×100 (±50) حوالين O.',[...ax(98),...[[50,50],[-50,50],[50,-50],[-50,-50]].map(p=>d(p)),l([-50,50],[50,50]),l([-50,-50],[50,-50]),l([50,-50],[50,50]),l([-50,-50],[-50,50])]],
+['فتحات الأركان','في كل ركن: فتحة Ø20 ودايرة خارجية R20.',MM([c(K1,10,H),c(K1,20,K)],Q4)],
+['دواير Ø60 وR40','على المحور الرأسي عند ±50: دايرة R30 وحواليها R40 (نفس المركز).',MM([c([0,50],30,K),c([0,50],40,K)],Y2)],
+['الخطوط المماسة','خط مماس خارجي بين R40 وR20 (استخدم المسطرة على الدايرتين).',MM([tl],Q4)],
+['القوس R54','قوس 54+20 = 74 من مركز الركن يقطع المحور الأفقي = مركز R54. ارسم R54 مماس لدايرتي الركن.',[a(K1,74,-55,-30,K),a([-50,50],74,-150,-125,K),d(Rc),d([-Rc[0],0]),r54,M(r54,-1,1),c(Rc,54,K),c([-Rc[0],0],54,K)]],
+['الشكل النهائي','قوّي: أقواس الأركان، R40 من فوق وتحت، الخطوط المماسة، R54، وخطي الساق (±20) مع دايرتي Ø60.',[...MM([corner],Q4),...MM([top],Y2),...MM([tl],Q4),r54,M(r54,-1,1),...MM([sline],X2),...MM([big],Y2),...MM([c([50,50],10,O)],Q4)]]]);}
+
+// ---- HW2 Fig4
+{const T=[0,75],Lb=[-82.5,0],Rb=[82.5,0],B=[0,-160],Fr=[64,-Math.sqrt(58*58-18.5*18.5)];
+const G=inter(T,64,Rb,58).sort((p,q)=>q[0]-p[0])[0],aT=ang(sub(on(T,44,G),T));
+const lobe=a(Rb,38,ang(sub(Fr,Rb)),ang(sub(G,Rb)),O),f1=a(Fr,20,ang(sub(Rb,Fr)),180,O),f2=a(G,20,ang(sub(T,G)),ang(sub(Rb,G)),O),stem=l([44,Fr[1]],[44,-160],O);
+const sk=(it,k=K)=>P(it.q,k);
+fig('HW2 · Fig.4',[-125,-195,125,105],[
+['المحاور والمراكز','O عند مستوى الفصين الجانبيين. الجانبيين عند ±82.5 (165÷2)، العلوي فوق O بـ 75، والسفلي تحت O بـ 160.',[...ax(100),l([-100,-160],[100,-160]),...[T,Lb,Rb,B,[0,0]].map(d)]],
+['الفتحات والفصوص','فتحات: Ø44 (علوي) وØ38 (جانبيين). الدواير الخارجية: R44 (علوي وسفلي) وR38 (جانبيين).',[c(T,22,H),c(Lb,19,H),c(Rb,19,H),c(T,44),c(Lb,38),c(Rb,38),c(B,44)]],
+['مركز R20','ارسم خطين رأسيين على ±44 للساق. المركز السفلي: على الرأسي ±64 وعلى بُعد 38+20 = 58 من مركز الفص. العلوي: 64 من مركز R44 و58 من مركز R38.',[...MM([l([44,-160],[44,Fr[1]],A),l([64,-100],[64,10],K),a(Rb,58,-125,-95,K),d(Fr),a(T,64,ang(sub(G,T))-10,ang(sub(G,T))+10,K),a(Rb,58,ang(sub(G,Rb))-10,ang(sub(G,Rb))+10,K),d(G)],X2)]],
+['أقواس R20','ارسم قوسي R20 (السفلي والعلوي) على الجهتين، مماسين للفص والساق.',MM([f1,f2],X2).map(x=>P(x.q,A))],
+['الفتحة الطويلة','Slot بنهايتين R22: مركز العلوية عند O، والسفلية عند أسفل بـ 160، وخطين رأسيين على ±22.',[...MM([l([22,-160],[22,0],A)],X2),a([0,0],22,0,180,A),a(B,22,180,360,A)]],
+['الشكل النهائي','قوّي الحدود الخارجية، الفتحات، والـ Slot.',[...MM([lobe,f1,f2,stem],X2),a(T,44,aT,180-aT,O),a(B,44,180,360,O),c(T,22,O),c(Lb,19,O),c(Rb,19,O),...MM([l([22,-160],[22,0],O)],X2),a([0,0],22,0,180,O),a(B,22,180,360,O)]]]);}
+
+
+// ---- CW1 Q2,3
+{const v=[10,20,30,40];
+fig('CW1 · تمرين 2 و3',[-6,-6,58,58],[
+['المربع','ارسم مربع ضلعه 50 مم.',[P([[0,0],[50,0],[50,50],[0,50],[0,0]],H)]],
+['تمرين 2: العلامات','علّم على الضلع الرأسي كل 10 مم (4 علامات).',v.map(y=>d([0,y]))],
+['الخطوط الأفقية','وصّل كل علامة بالضلع المقابل بخط أفقي تقيل بالمثلث والمسطرة.',v.map(y=>l([0,y],[50,y],O))],
+['تمرين 3: العلامات','في مربع جديد علّم على الضلع الأفقي كل 10 مم.',v.map(x=>d([x,0]))],
+['الخطوط الرأسية','وصّل كل علامة بالضلع المقابل بخط رأسي تقيل.',v.map(x=>l([x,0],[x,50],O))]],false);}
+
+// ---- CW1 Fig3
+{const ys=[0,15,30,45,60],Rs=[30,22.5,15,7.5],Lf=Rs.map(R=>a([0,60-R],R,90,270)),Rt=Rs.map(R=>a([60,R],R,-90,90));
+fig('CW1 · Fig.3',[-38,-8,98,68],[
+['5 خطوط أفقية','ارسم 5 خطوط أفقية طول كل واحد 60 مم، والمسافة بين الخط والتاني 15.',ys.map(y=>l([0,y],[60,y],H))],
+['الحدود الرأسية','ارسم خطين رأسيين عند طرفي الخطوط (x=0 وx=60). مراكز الأقواس عليهم.',[l([0,-5],[0,65]),l([60,-5],[60,65]),...Rs.map(R=>d([0,60-R])),...Rs.map(R=>d([60,R]))]],
+['الأقواس اليسار','كلها بتبدأ من الركن العلوي الأيسر: R30 (لحد الخط 0)، R22.5 (لحد 15)، R15 (لحد 30)، R7.5 (لحد 45). المركز على الخط الرأسي اليسار.',Lf],
+['الأقواس اليمين','نفس الفكرة من الركن السفلي الأيمن: R30 (من الخط 60)، R22.5 (من 45)، R15 (من 30)، R7.5 (من 15). المركز على الخط الرأسي اليمين.',Rt],
+['الشكل النهائي','قوّي الخطوط والأقواس كلها.',[...ys.map(y=>l([0,y],[60,y],O)),...Lf.map(x=>P(x.q,O)),...Rt.map(x=>P(x.q,O))]]]);}
+
+// ---- CW2 Fig3
+{const Cc=[0,-15],F1=[24,-42],R2=[27,-42+Math.sqrt(400-9)],aS=ang([7,-Math.sqrt(95)]),aE=ang(sub(F1,R2)),aB=ang([24,-32]);
+const fil=a(R2,20,180,aE,O),bot=a(Cc,40,-180-aB,aB,O),top=a([0,0],12,aS,180-aS,O);
+fig('CW2 · Fig.3',[-34,-55,34,16],[
+['المحور والدواير','ارسم محور رأسي، دايرة Ø24 (R12) وبداخلها Ø12 (R6) من نفس المركز.',[l([0,-52],[0,15]),l([-20,0],[20,0]),d([0,0]),c([0,0],12,K),c([0,0],6,H)]],
+['الساق','خطين رأسيين على ±7 (العرض 14) بيبدأوا من الدايرة ناحية تحت.',[l([7,-Math.sqrt(95)],[7,-30],A),l([-7,-Math.sqrt(95)],[-7,-30],A)]],
+['مركز R40','على المحور 15 تحت مركز الدايرة. ارسم القوس السفلي R40.',[d(Cc),l([-30,-15],[30,-15]),a(Cc,40,-180-aB,aB,A)]],
+['النقطة F','ارسم خطين رأسيين على ±24 (عرض الشكل 48). من تقاطعهم مع القوس R40 اطلع 5 لفوق = النقطة F.',[l([24,-50],[24,-38]),l([-24,-50],[-24,-38]),l([24,-47],[24,-42],A),l([-24,-47],[-24,-42],A),d(F1),d([-24,-42])]],
+['مركز R20','خط رأسي على ±27 (7+20). افتح الفرجار 20 من F وقاطع الخط ده = مركز R20.',[l([27,-40],[27,-5]),l([-27,-40],[-27,-5]),a(F1,20,50,90,K),a([-24,-42],20,90,130,K),d(R2),d([-R2[0],R2[1]])]],
+['أقواس R20','من المركز ارسم R20 بين الساق والنقطة F (القوس غاطس لجوه). كرر على الجهة التانية.',[fil,M(fil,-1,1)]],
+['الشكل النهائي','قوّي: الدايرة، الساق، أقواس R20، الحافتين الرأسيتين (5)، والقوس R40 السفلي.',[top,c([0,0],6,O),l([7,-Math.sqrt(95)],[7,R2[1]],O),l([-7,-Math.sqrt(95)],[-7,R2[1]],O),fil,M(fil,-1,1),l([24,-47],[24,-42],O),l([-24,-47],[-24,-42],O),bot]]]);}
+
+// ---- HW2 Fig3
+{const Cc=[0,10],Oo=[0,0],T=[0,70],Tc=inter(Cc,21,Oo,27).sort((p,q)=>q[0]-p[0])[0];
+const aTip=ang(sub(Tc,Cc)),tIn=on(Oo,23,Tc),aT=ang(sub(tIn,Tc)),aJ=ang([7,Math.sqrt(576)]),aS=ang([7,-Math.sqrt(95)]);
+const out=a(Cc,25,aTip,aJ,O),tip=a(Tc,4,aT,aTip,O),inn=a(Oo,23,ang(tIn),180-ang(tIn),O),stem=l([7,34],[7,70-Math.sqrt(95)],O);
+fig('HW2 · Fig.3',[-35,-8,35,85],[
+['المحور والقاعدة','ارسم محور رأسي وخط القاعدة. علّم نقطتين على المحور: O على القاعدة، ونقطة تانية فوقها بـ 10.',[l([0,-4],[0,84]),l([-30,0],[30,0]),d(Oo),d(Cc)]],
+['الدايرة العلوية','مركزها 70 فوق القاعدة. ارسم Ø24 (R12) وØ14 (R7).',[l([-20,70],[20,70]),d(T),c(T,12,K),c(T,7,H)]],
+['الساق','خطين رأسيين على ±7 (العرض 14) من الدايرة لتحت.',[l([7,34],[7,70-Math.sqrt(95)],A),l([-7,34],[-7,70-Math.sqrt(95)],A)]],
+['القوسين الرئيسيين','R25 من النقطة اللي فوق O بـ 10 (القوس الخارجي)، وR23 من O (القوس الداخلي).',[a(Cc,25,20,160,A),a(Oo,23,20,160,A)]],
+['مراكز R4','قوس 25−4 = 21 من النقطة (0,10)، وقوس 23+4 = 27 من O. التقاطع = مركز R4 (على كل جهة).',[a(Cc,21,aTip-10,aTip+10),a(Oo,27,ang(Tc)-8,ang(Tc)+8),M(a(Cc,21,aTip-10,aTip+10),-1,1),M(a(Oo,27,ang(Tc)-8,ang(Tc)+8),-1,1),d(Tc),d([-Tc[0],Tc[1]]),c(Tc,4,K),c([-Tc[0],Tc[1]],4,K),a(Cc,21,aTip,180-aTip,K)]],
+['الشكل النهائي','امسح الزيادة: R25 الخارجي، R23 الداخلي، أطراف R4، الساق، والدايرة العلوية.',[a(T,12,aS,180-aS,O),c(T,7,O),stem,M(stem,-1,1),out,M(out,-1,1),tip,M(tip,-1,1),inn]]]);}
+
+const CO=O;
+// ---- CW3 Fig1
+{const O=[0,0],T=[-19,48],c1=[-68,0],c2=[-53,0],E0=[70,0],E1=[70*Math.cos(40*D),70*Math.sin(40*D)],C30=[-19-Math.sqrt(2484),52];
+const nn=[-0.25,-Math.sqrt(1-.0625)],t1=add(c1,mul(nn,22)),t2=mul(nn,39);
+const C20=inter(T,40,E1,42).sort((p,q)=>q[1]-p[1])[0],C16=inter(O,55,E0,38).sort((p,q)=>p[1]-q[1])[0];
+const ou=it=>it.t=='c'?c(it.p,it.r,CO):P(it.q,CO);
+const slot=[a(c1,22,90,270),a(c2,22,-90,90),l(add(c1,[0,22]),add(c2,[0,22]),A),l(add(c1,[0,-22]),add(c2,[0,-22]),A),a(c1,11,90,270),a(c2,11,-90,90),l(add(c1,[0,11]),add(c2,[0,11]),A),l(add(c1,[0,-11]),add(c2,[0,-11]),A)];
+const arm=[a(O,92,0,40),a(O,48,0,40),a(E0,22,180,360),a(E1,22,40,220),a(O,81,0,40),a(O,59,0,40),a(E0,11,180,360),a(E1,11,40,220)];
+const r30=a(C30,30,-90,ang(sub(T,C30))),r20=a(C20,20,ang(sub(T,C20)),ang(sub(E1,C20))),bl=l(t1,t2,A),r39=a(O,39,ang(nn),ang(C16)),r16=a(C16,16,ang(sub(E0,C16)),ang(sub(O,C16)));
+const rings=[c(O,22,H),c(O,14,H),c(T,20,H),c(T,9,H)];
+fig('CW3 · Fig.1',[-95,-52,98,75],[
+['المحاور والمراكز','ارسم الأفقي الرئيسي ومركز O. الدايرة العلوية مركزها 19 يسار O و48 فوق. مركزي الفتحة المستطيلة على الأفقي عند -53 و-68 (المسافة بينهم 15).',[l([-95,0],[98,0]),l([0,-45],[0,70]),l([-19,-5],[-19,70]),l([-95,48],[5,48]),d(O),d(T),d(c1),d(c2)]],
+['دواير O وT','حوالين O: Ø28 وØ44 (R14 وR22). حوالين T: Ø18 وØ40 (R9 وR20).',rings],
+['الفتحة المستطيلة','Slot عرضها 22 (R11) بين المركزين، وحواليها الشكل الخارجي R22 (قوسين نصف دايرة بينهم خطين أفقيين على ±22).',slot],
+['الفتحة المنحنية: المراكز','ارسم قوس مساعد R70 من O، وخط بزاوية 40° من الأفقي. نهايتي القوس E0 (على الأفقي) وE1 (على الخط 40°) هم مراكز الأطراف.',[a(O,70,-6,66,K),l(O,[88*Math.cos(40*D),88*Math.sin(40*D)]),d(E0),d(E1),c(E0,22,K),c(E1,22,K),c(E0,11,K),c(E1,11,K)]],
+['الفتحة المنحنية: الأقواس','من O ارسم أقواس R48 وR92 (الخارجي) وR59 وR81 (الفتحة)، ووصّلهم بأنصاف دواير R22 وR11 عند الأطراف.',arm],
+['القوس R30','ارسم خط أفقي على ارتفاع 22+30 = 52. قوس 20+30 = 50 من مركز T يقطعه في مركز R30. ارسم R30 مماس للدايرة T وللنقطة العليا للشكل الأيسر.',[l([-95,52],[0,52]),a(T,50,170,190),d(C30),r30]],
+['القوس R20','قوس 20+20 = 40 من مركز T، وقوس 22+20 = 42 من E1. التقاطع (الأعلى) = مركز R20. ارسم القوس مماس للدايرتين.',[a(T,40,10,40),a(E1,42,145,170),d(C20),r20]],
+['R39 والخط المماس','ارسم R39 من O. ثم خط مماس لدايرة R22 اليسرى ولقوس R39 من تحت (استخدم المسطرة والمثلث).',[a(O,39,200,340,K),bl,a(O,39,ang(nn),-60)]],
+['القوس R16','قوس 39+16 = 55 من O، وقوس 22+16 = 38 من E0. التقاطع (الأسفل) = مركز R16. ارسم القوس مماس لـ R39 وللطرف السفلي.',[a(O,55,-50,-15),a(E0,38,215,245),d(C16),r39,r16]],
+['الشكل النهائي','قوّي كل الأقواس والدواير بخط تقيل.',[...slot.map(ou),...arm.map(ou),...rings.map(ou),ou(r30),ou(r20),ou(bl),ou(r39),ou(r16)]]]);}
+
+// ---- CW3 Fig2
+{const Aa=[0,0],S1=[-105,28],S2=[-105,52];
+const C80=inter(S2,94,Aa,94).sort((p,q)=>q[1]-p[1])[0],C160=inter(S1,146,Aa,146).sort((p,q)=>q[1]-p[1])[0];
+const r80=a(C80,80,ang(sub(S2,C80)),ang(sub(Aa,C80))),r160=a(C160,160,ang(sub(S1,C160)),ang(sub(Aa,C160)));
+const ou=it=>it.t=='c'?c(it.p,it.r,O):P(it.q,O);
+const slot=[a(S2,14,0,180),a(S1,14,180,360),l([-91,28],[-91,52],A),l([-119,28],[-119,52],A),a(S2,7,0,180),a(S1,7,180,360),l([-98,28],[-98,52],A),l([-112,28],[-112,52],A)];
+fig('CW3 · Fig.2',[-130,-30,25,72],[
+['المحاور والمراكز','مركز الدايرة اليمين A. المحور الرأسي للفتحة على بُعد 105 يسار A. المركز السفلي للفتحة 28 فوق مستوى A، والعلوي 24 فوقه.',[l([-128,0],[22,0]),l([-105,-5],[-105,70]),l([-128,28],[-80,28]),l([-128,52],[-80,52]),d(Aa),d(S1),d(S2)]],
+['الدواير','حوالين A: Ø14 وR14. حوالين S1 وS2: R14 (خارجي) وR7 (فتحة).',[c(Aa,14,H),c(Aa,7,H),c(S1,14),c(S2,14),c(S1,7),c(S2,7)]],
+['جسم الفتحة (Slot)','وصّل الدواير بخطوط رأسية على ±14 (الخارجي) و±7 (الفتحة) من المحور.',slot],
+['القوس R80','قوس 80+14 = 94 من S2، وقوس 94 من A. التقاطع (الأعلى) = مركز R80. ارسمه مماس للدايرتين من برّه.',[a(S2,94,10,40),a(Aa,94,95,115),d(C80),r80]],
+['القوس R160','قوس 160−14 = 146 من S1، وقوس 146 من A. التقاطع (الأعلى) = مركز R160. ارسمه مماس للدايرتين من جوه.',[a(S1,146,45,80),a(Aa,146,98,118),d(C160),r160]],
+['الشكل النهائي','قوّي الأقواس والدواير.',[...slot.map(ou),c(Aa,14,O),c(Aa,7,O),ou(r80),ou(r160)]]]);}
+
+// ---- HW3 Fig1
+{const O=[0,0],P1=[75*Math.cos(15*D),75*Math.sin(15*D)],P2=[75*Math.cos(-30*D),75*Math.sin(-30*D)];
+const C62=[0,141-Math.sqrt(43*43-19*19)],C40=[78,P1[1]+Math.sqrt(55*55-(78-P1[0])**2)];
+const C16=inter(O,54,P2,31).sort((p,q)=>p[1]-q[1])[0],aC=ang(sub([19,141],C62));
+const ou=it=>it.t=='c'?c(it.p,it.r,CO):P(it.q,CO);
+const slots=[];[-19,19].forEach(x=>slots.push(l([x-7,33],[x-7,141],A),l([x+7,33],[x+7,141],A),a([x,141],7,0,180),a([x,33],7,180,360)));
+const outer=[l([-38,0],[-38,141],A),l([38,C40[1]],[38,141],A),a([19,141],19,0,aC),a([-19,141],19,180-aC,180),a(C62,62,aC,180-aC)];
+const r38=a(O,38,180,360+ang(C16)),r16=a(C16,16,ang(sub(P2,C16)),ang(sub(O,C16))),capB=a(P2,15,ang(sub(C16,P2)),330),r90=a(O,90,-30,15),capT=a(P1,15,15,ang(sub(C40,P1))),r40=a(C40,40,180,ang(sub(P1,C40)));
+const hole=[a(O,70,-30,15),a(O,80,-30,15),a(P1,5,15,195),a(P2,5,150,330)];
+fig('HW3 · Fig.1',[-48,-55,100,172],[
+['المحاور والمراكز','O مركز الدايرة Ø40. الفتحتين الرأسيتين على ±19 من المحور: مراكز النهايات السفلية 33 فوق O، والعلوية 108 فوقهم (141 من O).',[l([-45,0],[95,0]),l([0,-45],[0,168]),...[-19,19].flatMap(x=>[l([x,25],[x,150]),d([x,33]),d([x,141])]),d(O)]],
+['Ø40 والفتحتين','دايرة Ø40 (R20) حوالين O. كل فتحة عرضها 14 (R7): نصفين دواير وخطين رأسيين.',[c(O,20,H),...slots]],
+['الجوانب وR19','خطين رأسيين على ±38. عند المركزين العلويين ارسم R19 (قوسين من الأعلى).',[l([-38,0],[-38,145],K),l([38,0],[38,145],K),c([19,141],19),c([-19,141],19)]],
+['القوس R62','قوس 62−19 = 43 من كل مركز علوي. التقاطع (تحتهم) على المحور = مركز R62. ارسم القوس بين الدايرتين.',[a([19,141],43,235,265),a([-19,141],43,275,305),d(C62),a(C62,62,aC,180-aC)]],
+['R38 والجوانب','ارسم R38 من O مماسة للخطين الرأسيين ±38، وكمّل الخطين رأسي.',[...outer,r38]],
+['الفتحة المنحنية','من O ارسم خطين بزاوية +15° و-30° (الفرق 45°)، وقوس R75. الطرفين P1 وP2 مراكز R15 (الخارجي) وR5 (الفتحة).',[l(O,[95*Math.cos(15*D),95*Math.sin(15*D)]),l(O,[95*Math.cos(-30*D),95*Math.sin(-30*D)]),a(O,75,-35,20,K),d(P1),d(P2),c(P1,15,K),c(P2,15,K),...hole,r90]],
+['القوس R40','خط رأسي على 38+40 = 78. قوس 40+15 = 55 من P1 يقطعه = مركز R40. ارسم R40 مماس للخط ±38 ولدايرة R15.',[l([78,40],[78,110]),a(P1,55,80,100),d(C40),r40,capT]],
+['القوس R16','قوس 38+16 = 54 من O، وقوس 15+16 = 31 من P2. التقاطع (الأسفل) = مركز R16. ارسمه مماس لـ R38 وللطرف R15.',[a(O,54,-60,-40),a(P2,31,170,200),d(C16),r16,capB]],
+['الشكل النهائي','قوّي الشكل الخارجي والفتحات.',[...outer.map(ou),...slots.map(ou),c(O,20,CO),...hole.map(ou),ou(r38),ou(r16),ou(capB),ou(r90),ou(capT),ou(r40)]]]);}
+
+// ---- HW3 Fig2
+{const R=[0,0],L=[-60,0],T=[-56,82],dd=sub(R,T),dl=len(dd),n=[-dd[1]/dl,dd[0]/dl];
+const C30=inter(T,57,L,57).sort((p,q)=>p[0]-q[0])[0],Cb=inter(L,37,R,37).sort((p,q)=>p[1]-q[1])[0];
+const C84=sub(T,mul(n,57)),C10=inter(R,37,C84,94).sort((p,q)=>q[1]-p[1])[0],aN=ang(n);
+const ou=it=>it.t=='c'?c(it.p,it.r,O):P(it.q,O);
+const tT=add(T,mul(n,27)),tR=add(R,mul(n,27));
+const r30=a(C30,30,ang(sub(L,C30)),ang(sub(T,C30))),bump=a(Cb,10,ang(sub(R,Cb)),ang(sub(L,Cb))),lin=l(tT,tR,A);
+const r84=a(C84,84,ang(sub(C10,C84)),aN),r10=a(C10,10,ang(sub(C84,C10)),ang(sub(R,C10)));
+const oT=a(T,27,aN,ang(sub(C30,T))),oL=a(L,27,ang(sub(C30,L)),ang(sub(Cb,L))+360),oR=a(R,27,ang(sub(Cb,R)),aN+360),sl=a(R,27,aN,ang(sub(C10,R)));
+fig('HW3 · Fig.2',[-100,-40,40,118],[
+['المحاور والمراكز','مركز الدايرة اليمين R عند الأصل. الدايرة اليسار L على بُعد 60 يسار R. الدايرة العلوية T على بُعد 56 يسار R و82 فوق.',[l([-95,0],[35,0]),l([0,-35],[0,110]),l([-56,-5],[-56,110]),l([-95,82],[-20,82]),d(R),d(L),d(T)]],
+['الدواير الثلاث','حوالين كل مركز ارسم R27 وفتحة Ø28 (R14).',[c(R,27,K),c(L,27,K),c(T,27,K),c(R,14,H),c(L,14,H),c(T,14,H)]],
+['القوس R30 (يسار)','قوس 27+30 = 57 من T وقوس 57 من L. التقاطع (الشمال) = مركز R30. ارسم القوس مماس للدايرتين.',[a(T,57,200,235),a(L,57,100,140),d(C30),r30]],
+['القوس R10 (تحت)','قوس 27+10 = 37 من L وقوس 37 من R. التقاطع (الأسفل) = مركز R10. ارسم القوس بين الدايرتين.',[a(L,37,-50,-20),a(R,37,200,230),d(Cb),bump]],
+['الخط المماس','ارسم خط مماس خارجي لدايرتي T وR من الجهة اليمين العليا (موازي للخط الواصل بين المركزين).',[l(T,R),lin]],
+['القوس R84','مركزه على امتداد الخط بين نقطة التماس (على دايرة T) ومركز T، على بُعد 84 من نقطة التماس. القوس مماس لدايرة T من جوه.',[l(tT,C84),d(C84),r84]],
+['القوس R10 (علوي)','قوس 84+10 = 94 من مركز R84، وقوس 27+10 = 37 من R. التقاطع (فوق R) = مركز R10. ارسم القوس مماس لـ R84 ولدايرة R.',[a(C84,94,-20,5),a(R,37,95,120),d(C10),r10]],
+['الشكل النهائي','قوّي الأقواس والدواير والفتحات.',[ou(oT),ou(oL),ou(oR),ou(sl),ou(r30),ou(bump),ou(lin),ou(r84),ou(r10),c(R,14,O),c(L,14,O),c(T,14,O)]]]);}
+
+// ---- Week 4: orthographic projections
+const mkFig=(n,vb,st,fade=true)=>({n,vb,st,fade});
+const Lv=(a,b,c,d)=>['L',a,b,c,d],Hd=(a,b,c,d)=>['H',a,b,c,d],Ar=(cx,cy,r,a0,a1)=>['A',cx,cy,r,a0,a1];
+const poly=pts=>pts.map((p,i)=>{const q=pts[(i+1)%pts.length];return Lv(p[0],p[1],q[0],q[1])});
+const rect=(x0,y0,x1,y1)=>poly([[x0,y0],[x1,y0],[x1,y1],[x0,y1]]);
+const OB=[
+{n:'CW4 · Fig.1',W:44,D:17,H:26,F:poly([[0,0],[44,0],[44,26],[36,26],[22,12],[8,26],[0,26]]),T:[...rect(0,0,44,17),Lv(8,0,8,17),Lv(22,0,22,17),Lv(36,0,36,17)],S:[...rect(0,0,17,26),Hd(0,12,17,12)],
+ ha:'خط أفقي عند ارتفاع 12 في المنظور الجانبي (قاع الـ V).',he:'a horizontal line at height 12 in the side view (the bottom of the V).'},
+{n:'CW4 · Fig.2',W:44,D:17,H:25,F:[Lv(0,0,44,0),Lv(44,0,44,25),Lv(44,25,35,25),Ar(22,25,13,180,360),Lv(9,25,0,25),Lv(0,25,0,0)],T:[...rect(0,0,44,17),Lv(9,0,9,17),Lv(35,0,35,17)],S:[...rect(0,0,17,25),Hd(0,12,17,12)],
+ ha:'خط أفقي عند ارتفاع 12 في المنظور الجانبي (قاع القطع الأسطواني R13).',he:'a horizontal line at height 12 in the side view (the bottom of the R13 cylindrical cut).'},
+{n:'CW4 · Fig.3',W:45,D:17,H:21,F:[Lv(0,0,45,0),Lv(45,0,45,8),Ar(45,21,13,180,270),Lv(32,21,13,21),Ar(0,21,13,270,360),Lv(0,8,0,0)],T:[...rect(0,0,45,17),Lv(13,0,13,17),Lv(32,0,32,17)],S:[...rect(0,0,17,21),Lv(0,8,17,8)]},
+{n:'CW4 · Fig.4',W:88,D:38,H:52,F:poly([[0,0],[88,0],[88,22],[64,22],[64,52],[22,52],[32,30],[0,30]]),T:[...rect(0,0,88,38),Lv(22,0,22,38),Hd(32,0,32,38),Lv(64,0,64,38)],S:[...rect(0,0,38,52),Lv(0,30,38,30),Hd(0,22,38,22)],
+ ha:'خط عند x=32 في المنظور العلوي (تحت الجزء المائل البارز) وخط أفقي عند ارتفاع 22 في الجانبي (الجزء الأقل ارتفاعًا ناحية اليمين).',he:'a line at x=32 in the top view (under the overhanging slope) and a horizontal line at height 22 in the side view (the lower part on the right).'},
+{n:'HW4 · Fig.1',W:40,D:30,H:50,F:[...rect(0,0,40,50),Lv(0,10,40,10),Lv(0,30,40,30),Lv(0,40,40,40)],T:[...rect(0,0,40,30),Lv(0,10,40,10),Lv(0,20,40,20)],S:poly([[0,0],[30,0],[30,10],[20,10],[20,50],[10,50],[10,40],[0,40],[0,30],[10,30],[10,10],[0,10]])},
+{n:'HW4 · Fig.2',W:70,D:30,H:35,F:[...poly([[0,0],[70,0],[70,17],[60,17],[60,35],[10,35],[10,17],[0,17]]),...rect(20,7,50,17)],T:[...rect(0,0,70,30),Lv(10,0,10,30),Lv(60,0,60,30),Hd(20,0,20,30),Hd(50,0,50,30)],S:[...rect(0,0,30,35),Lv(0,17,30,17),Hd(0,7,30,7)],
+ ha:'خطين عند x=20 وx=50 في العلوي، وخط عند ارتفاع 7 في الجانبي (الفتحة المستطيلة).',he:'two lines at x=20 and x=50 in the top view, and a line at height 7 in the side view (the rectangular opening).'},
+{n:'HW4 · Fig.3',W:60,D:30,H:40,F:poly([[0,0],[20,0],[20,10],[40,10],[40,0],[60,0],[60,18],[50,18],[50,40],[17,40],[0,24]]),T:[...rect(0,0,60,30),Lv(17,0,17,30),Lv(50,0,50,30),Hd(20,0,20,30),Hd(40,0,40,30)],S:[...rect(0,0,30,40),Lv(0,24,30,24),Hd(0,18,30,18),Hd(0,10,30,10)],
+ ha:'خطين عند x=20 وx=40 في العلوي (الفتحة السفلية)، وخطين عند ارتفاع 10 و18 في الجانبي.',he:'two lines at x=20 and x=40 in the top view (the bottom channel), and two lines at heights 10 and 18 in the side view.'},
+{n:'HW4 · Fig.4',W:36,D:27,H:28,F:[...poly([[0,0],[36,0],[36,7],[28.5,28],[7.5,28],[0,7]]),Lv(0,7,36,7)],T:[...rect(0,0,36,27),Lv(0,13,36,13),Lv(7.5,13,7.5,27),Lv(28.5,13,28.5,27)],S:poly([[0,0],[27,0],[27,28],[13,28],[13,7],[0,7]])},
+{n:'HW4 · Fig.5',W:53,D:17,H:25,F:poly([[0,0],[43,0],[43,10],[53,10],[53,25],[18,25],[0,7]]),T:[...rect(0,0,53,17),Lv(18,0,18,17),Hd(43,0,43,17)],S:[...rect(0,0,17,25),Lv(0,7,17,7),Hd(0,10,17,10)],
+ ha:'خط عند x=43 في العلوي، وخط عند ارتفاع 10 في الجانبي (الجيب في الركن السفلي).',he:'a line at x=43 in the top view, and a line at height 10 in the side view (the notch at the bottom corner).'},
+{n:'HW4 · Fig.6',W:70,D:20,H:40,F:poly([[10,0],[60,0],[60,10],[70,10],[70,40],[45,40],[35,20],[25,40],[0,40],[0,10],[10,10]]),T:[...rect(0,0,70,20),Lv(25,0,25,20),Lv(35,0,35,20),Lv(45,0,45,20),Hd(10,0,10,20),Hd(60,0,60,20)],S:[...rect(0,0,20,40),Lv(0,10,20,10),Hd(0,20,20,20)],
+ ha:'خطين عند x=10 وx=60 في العلوي (الجزء السفلي الأضيق)، وخط عند ارتفاع 20 في الجانبي (قاع الـ V).',he:'two lines at x=10 and x=60 in the top view (the narrower bottom part), and a line at height 20 in the side view (the bottom of the V).'}
+];
+function dashItem(p,q){const L=len(sub(q,p)),n=Math.max(1,Math.round(L/3.8)),arr=[];for(let i=0;i<n;i++){arr.push(add(p,mul(sub(q,p),i/n)),add(p,mul(sub(q,p),(i+.62)/n)))}arr.dash=true;return P(arr,X)}
+function orthoBuild(o,sys){const g=15,W=o.W,D=o.D,H=o.H,first=sys!=='third';
+const mF=(x,z)=>[x,z],mT=first?(x,d)=>[x,-g-(D-d)]:(x,d)=>[x,H+g+d],mS=first?(u,z)=>[W+g+(D-u),z]:(u,z)=>[-g-u,z];
+const vis=(pr,m,k)=>pr.filter(p=>p[0]!='H').map(p=>p[0]=='A'?a(m(p[1],p[2]),p[3],p[4],p[5],k):l(m(p[1],p[2]),m(p[3],p[4]),k));
+const hid=(pr,m)=>pr.filter(p=>p[0]=='H').map(p=>dashItem(m(p[1],p[2]),m(p[3],p[4])));
+const xs=[...new Set([0,W,...o.T.filter(p=>p[0]!='A'&&p[1]==p[3]).map(p=>p[1])])].sort((p,q)=>p-q),zs=[...new Set([0,H,...o.S.filter(p=>p[0]!='A'&&p[2]==p[4]).map(p=>p[2])])].sort((p,q)=>p-q);
+const pv=xs.map(x=>first?l([x,0],[x,-g-D],K):l([x,H],[x,H+g+D],K)),ph=zs.map(z=>first?l([W,z],[W+g+D,z],K):l([0,z],[-g-D,z],K));
+const fv=vis(o.F,mF,A),tv=vis(o.T,mT,A),sv=vis(o.S,mS,A),th=hid(o.T,mT),sh=hid(o.S,mS),anyH=th.length+sh.length>0;
+const fin=[...vis(o.F,mF,O),...vis(o.T,mT,O),...vis(o.S,mS,O)];
+const items=[...fv,...tv,...sv,...th,...sh];let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;items.forEach(it=>it.q.forEach(p=>{x0=Math.min(x0,p[0]);x1=Math.max(x1,p[0]);y0=Math.min(y0,p[1]);y1=Math.max(y1,p[1])}));
+const T=(ar,en)=>({ar,en});
+const dn=first?'لتحت':'لفوق',dnE=first?'downward':'upward',sd=first?'يمين':'شمال',sdE=first?'right':'left';
+const hl={ar:o.ha||'',en:o.he||''};
+const S=[
+[T('المنظور الأمامي (Front)','Front view'),T('ارسم الشكل الخارجي للمنظور الأمامي بعرض '+W+' وارتفاع '+H+' مم، وبعدين الخطوط الداخلية اللي بتبان من الأمام.','Draw the outline of the front view '+W+' mm wide and '+H+' mm high, then the inner lines that are visible from the front.'),[...fv,d([0,0]),d([W,0]),d([0,H])]],
+[T('خطوط الإسقاط '+dn,'Projection lines '+dnE),T('من كل حافة رأسية في المنظور الأمامي اسقط خط رأسي خفيف '+dn+'، وسيب مسافة 15 مم بين المنظورين.','From every vertical edge of the front view draw a light vertical line '+dnE+', leaving a 15 mm gap between the views.'),pv],
+[T('المنظور العلوي (Top)','Top view'),T('ارسم المنظور العلوي '+(first?'تحت':'فوق')+' الأمامي: العرض '+W+' والعمق '+D+'. الواجهة الأمامية بتبقى على الحافة السفلية، وارسم الخطوط اللي بتبان من فوق.','Draw the top view '+(first?'below':'above')+' the front view: width '+W+' and depth '+D+'. The front of the part is the bottom edge. Add the lines visible from above.'),tv],
+[T('خطوط الإسقاط ناحية ال'+sd,'Projection lines to the '+sdE),T('من كل ارتفاع في المنظور الأمامي اسقط خط أفقي خفيف ناحية ال'+sd+'، وسيب 15 مم.','From every height in the front view draw a light horizontal line to the '+sdE+', leaving 15 mm.'),ph],
+[T('المنظور الجانبي الأيسر (Left)','Left side view'),T('ارسم المنظور الجانبي الأيسر على ال'+sd+' من الأمامي: العمق '+D+' والارتفاع '+H+'. الأمام بيبقى على الحافة اليمين والخلف على الحافة الشمال (زي الوش الغامق في الرسمة المجسمة)، وارسم الخطوط الظاهرة.','Draw the left side view to the '+sdE+' of the front view: depth '+D+' and height '+H+'. The front of the part is on the right edge and the back on the left (like the dark face in the isometric view). Add the visible lines.'),sv]];
+if(anyH)S.push([T('الخطوط المخفية','Hidden lines'),T('الحواف اللي مش بتبان من الاتجاه ده بترسمها متقطعة رفيعة (Hidden lines): '+hl.ar,'Edges you cannot see from that direction are drawn as thin dashed lines (hidden lines): '+hl.en),[...th,...sh]]);
+S.push([T('الشكل النهائي','Final shape'),T('قوّي الخطوط الظاهرة، وسيب المتقطعة رفيعة، وراجع إن كل نقطة في المنظور الأمامي ليها خط يقابلها في العلوي والجانبي.','Thicken the visible lines, keep the dashed ones thin, and check that every point in the front view has its matching line in the top and side views.'),fin]);
+const st=S.map(x=>[x[0].ar,x[1].ar,x[2]]);EN[o.n]=S.map(x=>[x[0].en,x[1].en]);
+const pd=.04*Math.max(x1-x0,y1-y0);return mkFig(o.n,[x0-pd,y0-pd,x1+pd,y1+pd],st,true)}
+const PROJ0=(()=>{try{return localStorage.getItem('eng-proj')||'first'}catch(e){return 'first'}})();
+F.sort((p,q)=>p.n.localeCompare(q.n));
+
+const EN={
+'CW1 · Fig.3':[['5 horizontal lines','Draw 5 horizontal lines, each 60 mm long, spaced 15 mm apart.'],['Vertical limits','Draw two vertical lines at the ends of the lines (x=0 and x=60). The arc centers lie on them.'],['Left arcs','All start at the top-left corner: R30 (down to line 0), R22.5 (to 15), R15 (to 30), R7.5 (to 45). Each center is on the left vertical line.'],['Right arcs','Same idea from the bottom-right corner: R30 (from line 60), R22.5 (from 45), R15 (from 30), R7.5 (from 15). Each center is on the right vertical line.'],['Final shape','Thicken all the lines and arcs.']],
+'CW1 · Fig.4':[['Diameter and big circle','Draw a horizontal diameter 160 long and a circle R80 (Ø160) centered at O in its middle. Diameter ends: A (left) and B (right).'],['Arc centers','Upper arc centers are to the right of O at +20, +40 and +60. Lower arc centers are to the left of O at -20, -40 and -60.'],['Top: R60','Center +20, radius 60, half circle above the diameter (from -40 to B).'],['Top: R40','Center +40, radius 40, half circle above the diameter (from O to B).'],['Top: R20','Center +60, radius 20, half circle above the diameter (from +40 to B).'],['Bottom: R20','Center -60, radius 20, half circle below the diameter (from A to -40).'],['Bottom: R40','Center -40, radius 40, half circle below the diameter (from A to O).'],['Bottom: R60','Center -20, radius 60, half circle below the diameter (from A to +40).'],['Final shape','Thicken circle R80 and all six arcs.']],
+'CW1 · تمرين 2 و3':[['The square','Draw a square with 50 mm sides.'],['Ex. 2: marks','Mark the vertical side every 10 mm (4 marks).'],['Horizontal lines','Join each mark to the opposite side with a thick horizontal line using the set square and ruler.'],['Ex. 3: marks','In a new square, mark the horizontal side every 10 mm.'],['Vertical lines','Join each mark to the opposite side with a thick vertical line.']],
+'CW2 · Fig.1':[['Base and axis','Draw a vertical axis and the horizontal base line.'],['Two R7 circles','At height 7 above the base, mark two centers 40 apart (±20) and draw R7, tangent to the base.'],['Top circle','The center is on the axis 45 above the line of the R7 centers. Draw Ø24 (R12).'],['R25 center','Arc 12+25 = 37 from the top circle center and arc 7+25 = 32 from an R7 center. Their intersection = R25 center.'],['R25 arcs','From that center draw R25 between the two tangent points (concave side). Repeat on the other side.'],['Final shape','Erase the extras and thicken: top R12, R25 arcs, R7 ends and the base.']],
+'CW2 · Fig.2':[['Axes','Draw a horizontal axis and a vertical axis.'],['Two R13 circles','On the vertical axis mark two centers 46 apart (±23) and draw R13.'],['R40 & R30 center','An arc of radius 40−13 = 27 from an R13 center cuts the horizontal axis at O′ (14.1 right of the vertical).'],['R40 & R30','From O′ draw R40 (outer) and R30 (inner).'],['R5 arc','Its center is 30−5 = 25 from O′ and 13+5 = 18 from the R13 center. Draw it between R30 and R13 (and repeat below).'],['Final shape','Thicken: R40, R30, R5 and the outside of both R13 circles.']],
+'CW2 · Fig.3':[['Axis and circles','Draw a vertical axis, a circle Ø24 (R12) and inside it Ø12 (R6) with the same center.'],['The stem','Two vertical lines at ±7 (width 14) starting from the circle going down.'],['R40 center','On the axis, 15 below the circle center. Draw the bottom arc R40.'],['Point F','Draw two vertical lines at ±24 (shape width 48). From where they meet the R40 arc, go up 5 = point F.'],['R20 center','A vertical line at ±27 (7+20). Open the compass to 20 from F and cut that line = R20 center.'],['R20 arcs','From the center draw R20 between the stem and point F (concave side). Repeat on the other side.'],['Final shape','Thicken: the circle, the stem, R20 arcs, the two short vertical edges (5) and the bottom R40 arc.']],
+'CW3 · Fig.1':[['Axes and centers','Draw the main horizontal line and center O. The top circle center is 19 left of O and 48 up. The slot centers are on the horizontal at -53 and -68 (15 apart).'],['Circles at O and T','Around O: Ø28 and Ø44 (R14 and R22). Around T: Ø18 and Ø40 (R9 and R20).'],['The slot','Slot width 22 (R11) between the two centers, with the outer shape R22 around it (two half circles joined by horizontal lines at ±22).'],['Curved slot: centers','Draw a helper arc R70 from O and a line at 40° from the horizontal. The arc ends E0 (on the horizontal) and E1 (on the 40° line) are the end centers.'],['Curved slot: arcs','From O draw arcs R48 and R92 (outer) and R59 and R81 (slot), and join them with half circles R22 and R11 at the ends.'],['Arc R30','Draw a horizontal line at height 22+30 = 52. An arc 20+30 = 50 from T cuts it at the R30 center. Draw R30 tangent to circle T and to the top of the left shape.'],['Arc R20','Arc 20+20 = 40 from T and arc 22+20 = 42 from E1. The upper intersection = R20 center. Draw the arc tangent to both circles.'],['R39 and tangent line','Draw R39 from O. Then a line tangent to the left R22 circle and to arc R39 from below (use the ruler and set square).'],['Arc R16','Arc 39+16 = 55 from O and arc 22+16 = 38 from E0. The lower intersection = R16 center. Draw the arc tangent to R39 and the lower end.'],['Final shape','Thicken all arcs and circles.']],
+'CW3 · Fig.2':[['Axes and centers','Center of the right circle is A. The slot axis is 105 left of A. The slot lower center is 28 above A level, the upper one 24 above it.'],['Circles','Around A: Ø14 and R14. Around S1 and S2: R14 (outer) and R7 (slot).'],['Slot body','Join the circles with vertical lines at ±14 (outer) and ±7 (slot) from the axis.'],['Arc R80','Arc 80+14 = 94 from S2 and arc 94 from A. The upper intersection = R80 center. Draw it tangent to both circles from outside.'],['Arc R160','Arc 160−14 = 146 from S1 and arc 146 from A. The upper intersection = R160 center. Draw it tangent to both circles from inside.'],['Final shape','Thicken the arcs and circles.']],
+'HW1 · Fig.1':[['Centers line','Draw a horizontal line and mark the first center.'],['First ring','Inner Ø60 (R30) and outer Ø90 (R45), thickness 15.'],['Second ring','Distance between centers = 45+37.5 = 82.5. Then R22.5 and R37.5.'],['Third ring','Distance = 37.5+30 = 67.5. Draw R15 and R30.']],
+'HW1 · Fig.2':[['Helper circle','Draw two axes and a helper circle Ø80 (R40) from O.'],['Divide the circle','Divide it into equal parts (360÷7 ≈ 51.4° if there are 7 circles; count them on your sheet). Each point = a circle center.'],['First 3 circles','Put the compass on the point, open it to 40 and draw a circle (it passes through center O).'],['Remaining circles','Repeat on the remaining points.']],
+'HW2 · Fig.1':[['Axes','Draw two perpendicular axes.'],['Circle Ø160','A dashed circle R80 from O; the lobe centers lie on it.'],['Lobe centers','3 lines from O at 120° from each other. Where they meet the circle = lobe centers.'],['Inner circles','Draw Ø35, Ø52 and Ø80.'],['R14 lobes','Around each center draw a circle R14.'],['R42 center','Arc 40+42 = 82 from O and arc 14+42 = 56 from the lobe center. Intersection = R42 center.'],['R64 center','Arc 64−14 = 50 from the lobe center and arc 64+42 = 106 from the neighboring R42 center. Intersection = R64 center.'],['Final shape','Erase the extras and thicken the outer boundary. The three circles stay at medium weight.']],
+'HW2 · Fig.2':[['Axes and square','A square of centers 100×100 (±50) around O.'],['Corner holes','At each corner: a hole Ø20 and an outer circle R20.'],['Circles Ø60 and R40','On the vertical axis at ±50: circle R30 with R40 around it (same center).'],['Tangent lines','An external tangent line between R40 and R20 (use the ruler on the two circles).'],['Arc R54','Arc 54+20 = 74 from the corner center cuts the horizontal axis = R54 center. Draw R54 tangent to the two corner circles.'],['Final shape','Thicken: corner arcs, R40 top and bottom, the tangent lines, R54 and the two stem lines (±20) with the two Ø60 circles.']],
+'HW2 · Fig.3':[['Axis and base','Draw a vertical axis and the base line. Mark two points on the axis: O on the base and another 10 above it.'],['Top circle','Its center is 70 above the base. Draw Ø24 (R12) and Ø14 (R7).'],['The stem','Two vertical lines at ±7 (width 14) from the circle going down.'],['The two main arcs','R25 from the point 10 above O (outer arc) and R23 from O (inner arc).'],['R4 centers','Arc 25−4 = 21 from the point (0,10) and arc 23+4 = 27 from O. Intersection = R4 center (on each side).'],['Final shape','Erase the extras: outer R25, inner R23, R4 ends, the stem and the top circle.']],
+'HW2 · Fig.4':[['Axes and centers','O is at the level of the two side lobes. The side ones at ±82.5 (165÷2), the top one 75 above O, the bottom one 160 below O.'],['Holes and lobes','Holes: Ø44 (top) and Ø38 (sides). Outer circles: R44 (top and bottom) and R38 (sides).'],['R20 center','Draw two vertical lines at ±44 for the stem. Lower center: on the vertical ±64 and 38+20 = 58 from the lobe center. Upper: 64 from the R44 center and 58 from the R38 center.'],['R20 arcs','Draw the two R20 arcs (lower and upper) on both sides, tangent to the lobe and the stem.'],['The long slot','A slot with R22 ends: the upper end center at O, the lower at 160 below, and two vertical lines at ±22.'],['Final shape','Thicken the outer boundary, the holes and the slot.']],
+'HW3 · Fig.1':[['Axes and centers','O is the center of circle Ø40. The two vertical slots at ±19 from the axis: lower end centers 33 above O, upper ones 108 above them (141 from O).'],['Ø40 and the slots','Circle Ø40 (R20) around O. Each slot is 14 wide (R7): two half circles and two vertical lines.'],['Sides and R19','Two vertical lines at ±38. At the two upper centers draw R19 (upper arcs).'],['Arc R62','Arc 62−19 = 43 from each upper center. The intersection (below them) on the axis = R62 center. Draw the arc between the two circles.'],['R38 and the sides','Draw R38 from O tangent to the vertical lines ±38, and complete the lines.'],['Curved slot','From O draw two lines at +15° and -30° (45° apart) and arc R75. The ends P1 and P2 are the centers of R15 (outer) and R5 (slot).'],['Arc R40','A vertical line at 38+40 = 78. An arc 40+15 = 55 from P1 cuts it = R40 center. Draw R40 tangent to the line ±38 and to circle R15.'],['Arc R16','Arc 38+16 = 54 from O and arc 15+16 = 31 from P2. The lower intersection = R16 center. Draw it tangent to R38 and the R15 end.'],['Final shape','Thicken the outer shape and the slots.']],
+'HW3 · Fig.2':[['Axes and centers','The right circle center R is at the origin. The left circle L is 60 left of R. The top circle T is 56 left of R and 82 up.'],['The three circles','Around each center draw R27 and a hole Ø28 (R14).'],['Arc R30 (left)','Arc 27+30 = 57 from T and arc 57 from L. The left intersection = R30 center. Draw the arc tangent to both circles.'],['Arc R10 (bottom)','Arc 27+10 = 37 from L and arc 37 from R. The lower intersection = R10 center. Draw the arc between the two circles.'],['Tangent line','Draw an external tangent line to circles T and R on the upper-right side (parallel to the line joining the centers).'],['Arc R84','Its center lies on the line from the tangent point (on circle T) through the center of T, 84 from the tangent point. The arc is tangent to circle T from inside.'],['Arc R10 (top)','Arc 84+10 = 94 from the R84 center and arc 27+10 = 37 from R. The intersection (above R) = R10 center. Draw the arc tangent to R84 and circle R.'],['Final shape','Thicken the arcs, circles and holes.']]
+};
+
+const I18N={
+ar:{app:'هندسة',sub:'شرح تفاعلي خطوة بخطوة',setH:'Settings · الإعدادات',lng:'اللغة',lngd:'لغة التطبيق والشرح (العربية من اليمين لليسار)',thm:'المظهر',thmd:'الإضاءة: فاتح أو داكن أو حسب الجهاز',thmA:'تلقائي',thmL:'☀ فاتح',thmD:'☾ داكن',md:'وضع الرسم',mdd:'2D شرح عادي، 3D أدوات رسم (برجل ومسطرة وقلم) بترسم قدامك',md2:'2D · عادي',md3:'3D · أدوات الرسم',dmb:'المقاسات',dmbd:'إظهار أنصاف الأقطار والأقطار والمسافات على الرسمة',dmH:'إخفاء المقاسات',dmS:'إظهار المقاسات',spd:'سرعة العرض التلقائي',spdd:'سرعة الانتقال بين الخطوات وسرعة الأدوات في 3D',spS:'بطيء',spN:'عادي',spF:'سريع',reset:'↺ إعادة ضبط الإعدادات',restart:'↺ إعادة من البداية',
+prev:'→ السابق',next:'التالي ←',fp:'→',fn:'←',fpA:'الرسمة السابقة',fnA:'الرسمة التالية',svgA:'رسم هندسي توضيحي',progA:'تقدم خطوات التمرين',stop:'إيقاف العرض',autoBtn:'تشغيل تلقائي',pause:'Ⅱ إيقاف العرض',play:'▶ عرض تلقائي',
+step:(a,b)=>'الخطوة '+a+' من '+b,steps:n=>n+' خطوات',week:n=>'الأسبوع '+n,
+noteDraw:'<strong>مفتاح الرسم:</strong> الخطوط الرمادية = خطوط إنشاء (Construction)، الأحمر = الأقواس/الخطوط المساعدة المميزة، والأسود = الشكل النهائي. القيم بالمليمتر وبمقياس 1:1؛ في CW2 اضرب كل رقم × 2 حسب الملاحظة الأصلية للمادة.',
+noteSet:'<strong>Engineering Drawing</strong><br>الإعدادات بتتحفظ تلقائيًا على جهازك. الرسمات بتتفتح من CW أو HW وتظهر في Draw.'},
+en:{app:'Engineering',sub:'Interactive step-by-step guide',setH:'Settings',lng:'Language',lngd:'App and tutorial language',thm:'Appearance',thmd:'Light, dark, or follow the device',thmA:'Auto',thmL:'☀ Light',thmD:'☾ Dark',md:'Drawing mode',mdd:'2D: plain illustration. 3D: a compass, ruler and pencil draw it in front of you',md2:'2D · Standard',md3:'3D · Drawing tools',dmb:'Dimensions',dmbd:'Show radii, diameters and distances on the drawing',dmH:'Hide dimensions',dmS:'Show dimensions',spd:'Auto-play speed',spdd:'Step-to-step pace and tool speed in 3D',spS:'Slow',spN:'Normal',spF:'Fast',reset:'↺ Reset settings',restart:'↺ Restart',
+prev:'← Previous',next:'Next →',fp:'←',fn:'→',fpA:'Previous drawing',fnA:'Next drawing',svgA:'Illustrated engineering drawing',progA:'Exercise progress',stop:'Stop',autoBtn:'Auto-play',pause:'Ⅱ Pause',play:'▶ Auto-play',
+step:(a,b)=>'Step '+a+' of '+b,steps:n=>n+' steps',week:n=>'Week '+n,
+noteDraw:'<strong>Drawing key:</strong> gray lines = construction lines, red = highlighted arcs and helper lines, black = final shape. Values are in mm at 1:1 scale; for CW2 multiply every number by 2, as in the original course note.',
+noteSet:'<strong>Engineering Drawing</strong><br>Settings are saved automatically on your device. Open drawings from CW or HW; they appear in Draw.'}};
+Object.assign(I18N.ar,{done:'✓ خلّصتها',notDone:'○ علّمها كمُنجزة',shot:'📷 حفظ صورة',zin:'تكبير',zout:'تصغير',zres:'إعادة الحجم',saveH:'حفظ الصورة',saveHint:'اضغط مطولًا على الصورة لحفظها (أو استخدم زر التنزيل).',dl:'⬇ تنزيل',close:'إغلاق',progH:'تقدمك',progD:(a,b)=>'خلّصت '+a+' من '+b+' رسمة',resetP:'مسح التقدم'});
+Object.assign(I18N.en,{done:'✓ Done',notDone:'○ Mark as done',shot:'📷 Save image',zin:'Zoom in',zout:'Zoom out',zres:'Reset view',saveH:'Save image',saveHint:'Long-press the image to save it (or use the download button).',dl:'⬇ Download',close:'Close',progH:'Your progress',progD:(a,b)=>'Completed '+a+' of '+b+' drawings',resetP:'Clear progress'});
+Object.assign(I18N.ar,{dlApp:'تنزيل البرنامج',dlAppD:'نسخة كاملة تشتغل بدون إنترنت: ملف واحد تفتحه من أي متصفح.',dlAppB:'⬇ تنزيل البرنامج',dlOk:'✓ اتجهّز الملف (engineering-app.html)',dlNo:'اتلغى التنزيل.',dlErr:'تعذّر التنزيل من هنا. جرّب تفتح الرابط في المتصفح.'});
+Object.assign(I18N.en,{dlApp:'Download the app',dlAppD:'A complete offline copy: a single file you can open in any browser.',dlAppB:'⬇ Download the app',dlOk:'✓ File ready (engineering-app.html)',dlNo:'Download cancelled.',dlErr:'Could not download from here. Try opening the link in your browser.'});
+Object.assign(I18N.ar,{prj:'نظام الإسقاط',prjd:'للأسبوع 4: الزاوية الأولى (الأمامي فوق، العلوي تحته، والجانبي الأيسر على يمينه) أو الثالثة.',prj1:'الزاوية الأولى',prj3:'الزاوية الثالثة'});
+Object.assign(I18N.en,{prj:'Projection system',prjd:'For week 4: first angle (top view below the front, left view on its right) or third angle.',prj1:'First angle',prj3:'Third angle'});
+let lang='ar';const tr=k=>(I18N[lang]||I18N.ar)[k];
+const stx=(f,i)=>lang==='en'&&EN[f.n]&&EN[f.n][i]?EN[f.n][i]:f.st[i];
+const dispName=n=>lang==='en'?n.replace('تمرين 2 و3','Ex. 2 & 3').replace('تمرين 1','Ex. 1'):n;
+
+EN['HW1 · Fig.1']=[['Centers line','Draw a horizontal line and mark the first center.'],['First ring','Inner Ø60 (R30) and outer Ø90 (R45), thickness 15.'],['Second ring','The outer circle R37.5 is tangent from outside to the first ring’s inner circle: distance between centers = 30+37.5 = 67.5. Then the inner R22.5.'],['Third ring','The outer R30 is tangent to the second inner circle: distance = 22.5+30 = 52.5 from the second center. Then the inner R15.'],['Final shape','Erase the part of each outer circle that lies inside the next ring (they are trimmed at the intersections) and thicken the rest.']];
+EN['HW1 · Fig.2']=[['Helper circle','Draw two axes and a helper circle Ø80 (R40) from O.'],['Divide the circle','Put the compass on the circle, open it to 40 (the same radius) and divide it into 6 equal parts (60° each). Each point = a circle center.'],['The six circles','Put the compass on each point, open it to 40 and draw a full circle (all pass through O).'],['Final shape','In each circle erase the arc inside the previous circle (120°) and thicken the rest (240°).']];
+EN['CW1 · تمرين 1']=[['Guidelines','Draw two light horizontal lines 10 mm apart (the letter height) with a 2H pencil, and leave about 10 mm between rows.'],['Letter proportions','Letter width is about ⅔ of the height (6 mm), the gap between letters about 2 mm, and between words 6–8 mm. I, M and W are exceptions.'],['The word PLAN','Write upright letters (no slant) with a constant line weight. Start with the vertical strokes, then the slanted and curved ones.'],['The word ELEVATION','Repeat on the second row, and check the letter gaps by eye: they must look equal.']];
+EN['HW1 · تمرين 1']=[['7 mm guidelines','Draw two horizontal lines 7 mm apart for each row, and leave space between rows.'],['Letter proportions','Letter width is about 4.5 mm, the gap between letters 1.5 mm, and between words 4–5 mm.'],['First word','Write ENGINEERING between the two lines with upright letters.'],['Second word','Leave a gap and write DRAWING. Measure the length of the row first so the sentence fits the paper width.']];
+OB.forEach(o=>F.push(orthoBuild(o,PROJ0)));F.sort((p,q)=>p.n.localeCompare(q.n));
+// ---- engine
+const svg=document.getElementById('s'),cap=document.getElementById('c'),dd=document.getElementById('d'),pl=document.getElementById('pl');
+const stepLabel=document.getElementById('stepLabel'),percent=document.getElementById('percent'),progress=document.getElementById('progress');
+let fi=0,cur=0,timer=null;
+const reducedMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function updatePlayLabel(){pl.textContent=timer?tr('stop'):tr('autoBtn');document.getElementById('auto').textContent=timer?tr('pause'):tr('play');}
+function setCaption(){const f=F[fi],x=stx(f,cur),st=tr('step')(cur+1,f.st.length);cap.innerHTML='<b>'+st+' — '+x[0]+'</b>'+x[1];stepLabel.textContent=st}
+
+function pathD(q){const f=p=>p[0].toFixed(2)+','+p[1].toFixed(2);if(q.dash){let s='';for(let i=0;i+1<q.length;i+=2)s+='M'+f(q[i])+'L'+f(q[i+1]);return s}return 'M'+q.map(f).join('L')}
+function build(i){fi=i;updateFigHead();const f=F[i],[x0,y0,x1,y1]=f.vb.map((v,j)=>v+(j<2?-1:1)*.055*Math.max(f.vb[2]-f.vb[0],f.vb[3]-f.vb[1])),w=x1-x0,h=y1-y0;
+VB.x=x0;VB.y=-y1;VB.w=w;VB.h=h;Z=1;VX=x0+w/2;VY=-y1+h/2;applyView();svg.style.setProperty('--u',(Math.max(w,h)/200).toFixed(3));
+svg.innerHTML='<g transform="scale(1,-1)" id="g"></g>';const g=svg.firstChild,u=Math.max(w,h)/200;
+const mk=(tag,at,cls,s)=>{const e=document.createElementNS('http://www.w3.org/2000/svg',tag);for(const k in at)e.setAttribute(k,at[k]);e.setAttribute('class',cls);e.dataset.s=s;g.appendChild(e);return e};
+ELS=f.st.map(()=>[]);BU=u;BW=w;f.st.forEach((st,s)=>st[2].forEach(it=>{let e;
+if(it.t=='c')e=mk('circle',{cx:it.p[0],cy:it.p[1],r:it.r,pathLength:1},'el '+it.k,s);
+else if(it.t=='p')e=mk('path',{d:pathD(it.q),pathLength:1,'stroke-linecap':'round','stroke-linejoin':'round'},'draw '+it.k,s);
+else if(it.t=='d')e=mk('circle',{cx:it.p[0],cy:it.p[1],r:u*1.3},'el dot',s);ELS[s].push({e,it});}));buildDims(f,mk,u,x0,y0,x1,y1);toolG=document.createElementNS('http://www.w3.org/2000/svg','g');toolG.setAttribute('pointer-events','none');toolG.id='tool';g.appendChild(toolG);
+dd.innerHTML='';f.st.forEach(()=>dd.appendChild(document.createElement('i')));
+show(0)}
+function show2(i){const f=F[fi];cur=(i+f.st.length)%f.st.length;
+svg.querySelectorAll('[data-s]').forEach(e=>e.classList.toggle('on',+e.dataset.s<=cur));
+svg.classList.toggle('f',f.fade&&cur==f.st.length-1);
+[...dd.children].forEach((x,j)=>x.classList.toggle('on',j<=cur));
+setCaption();if(cur===f.st.length-1&&typeof markDone==='function')markDone(f.n,true);
+const pct=Math.round((cur+1)/f.st.length*100);percent.textContent=pct+'%';progress.style.width=pct+'%';
+document.querySelector('.progress-track').setAttribute('aria-valuenow',pct);
+document.getElementById('p').disabled=f.st.length<2;
+}
+
+
+// ---- dimensions overlay
+const fmt=n=>String(Math.round(n*10)/10);
+function buildDims(f,mk,u,x0,y0,x1,y1){
+const seen=new Set(),dots=[],fin=new Set();let k=0;
+const kof=it=>{if(it.t=='c')return F2(it.p[0])+','+F2(it.p[1])+','+F2(it.r)+'c';if(it.t=='p'&&it.q.m)return F2(it.q.m.c[0])+','+F2(it.q.m.c[1])+','+F2(it.q.m.r)+'a';return null};
+f.st.forEach(st=>st[2].forEach(it=>{if(it.k===O){const q=kof(it);if(q)fin.add(q)}}));
+const arrow=(P,dir,s)=>{const nx=-dir[1],ny=dir[0],q=[P,[P[0]-dir[0]*3*u+nx*u,P[1]-dir[1]*3*u+ny*u],[P[0]-dir[0]*3*u-nx*u,P[1]-dir[1]*3*u-ny*u]];mk('polygon',{points:q.map(z=>F2(z[0])+','+F2(z[1])).join(' ')},'dim ar',s)};
+const line=(a,b,s)=>mk('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1]},'dim dl',s);
+const label=(p,t,s,anc)=>{const e=mk('text',{transform:'translate('+F2(p[0])+' '+F2(p[1])+') scale(1,-1)','text-anchor':anc||'middle','font-size':F2(3.6*u)},'dim dt',s);e.textContent=t};
+f.st.forEach((st,s)=>st[2].forEach(it=>{
+if(it.t=='d'){if(s==0)dots.push(it.p);return}
+if(it.k===K)return;
+let C,r,Pm,isC=false;
+if(it.t=='c'){C=it.p;r=it.r;isC=true}else if(it.t=='p'&&it.q.m){C=it.q.m.c;r=it.q.m.r;Pm=it.q[Math.floor(it.q.length/2)]}else return;
+const key=F2(C[0])+','+F2(C[1])+','+F2(r)+(isC?'c':'a');if(fin.size&&!fin.has(key))return;if(seen.has(key))return;seen.add(key);
+let dir,P;
+if(isC){const th=[40,140,-40,-140,15,165,-15,-165][k++%8]*D;dir=[Math.cos(th),Math.sin(th)];P=add(C,mul(dir,r))}
+else{P=Pm;const v=sub(P,C);dir=mul(v,1/(len(v)||1))}
+const A0=isC?sub(C,mul(dir,r)):C;line(A0,P,s);arrow(P,dir,s);if(isC)arrow(A0,mul(dir,-1),s);
+label(add(P,mul(dir,4.5*u)),(isC?'Ø'+fmt(2*r):'R'+fmt(r)),s,dir[0]>.35?'start':dir[0]<-.35?'end':'middle')}));
+const used=new Set();let hr=0,vc=0;
+const grp=(ix)=>{const m=new Map();dots.forEach(p=>{const kk=F2(p[ix]);if(!m.has(kk))m.set(kk,[]);m.get(kk).push(p)});return[...m.values()].filter(a=>a.length>1)};
+grp(1).forEach(a=>{a.sort((p,q)=>p[0]-q[0]);const row=y0+6*u+hr*8*u;let did=false;
+for(let i=0;i<a.length-1;i++){const dd=a[i+1][0]-a[i][0];if(dd<.5)continue;const kk='h'+fmt(dd);if(used.has(kk))continue;used.add(kk);did=true;
+const p=[a[i][0],row],q=[a[i+1][0],row];line([a[i][0],a[i][1]],[p[0],row-1.5*u],0);line([a[i+1][0],a[i+1][1]],[q[0],row-1.5*u],0);line(p,q,0);arrow(p,[1,0],0);arrow(q,[-1,0],0);label([(p[0]+q[0])/2,row+1.6*u],fmt(dd),0)}
+if(did)hr++});
+grp(0).forEach(a=>{a.sort((p,q)=>p[1]-q[1]);const col=x0+6*u+vc*9*u;let did=false;
+for(let i=0;i<a.length-1;i++){const dd=a[i+1][1]-a[i][1];if(dd<.5)continue;const kk='v'+fmt(dd);if(used.has(kk))continue;used.add(kk);did=true;
+const p=[col,a[i][1]],q=[col,a[i+1][1]];line([a[i][0],a[i][1]],[col+1.5*u,p[1]],0);line([a[i+1][0],a[i+1][1]],[col+1.5*u,q[1]],0);line(p,q,0);arrow(p,[0,1],0);arrow(q,[0,-1],0);label([col+2*u,(p[1]+q[1])/2],fmt(dd),0,'start')}
+if(did)vc++});
+}
+function setDims(v){svg.classList.toggle('dims',!!v);document.querySelectorAll('#dmb button').forEach(b=>b.classList.toggle('on',(b.dataset.d==='1')===!!v));try{localStorage.setItem('eng-d',v?'1':'0')}catch(e){}}
+document.querySelectorAll('#dmb button').forEach(b=>b.onclick=()=>setDims(b.dataset.d==='1'));
+
+
+// ---- zoom / pan / export / progress
+const VB={x:0,y:0,w:100,h:100};let Z=1,VX=0,VY=0;
+function applyView(){const w=VB.w/Z,h=VB.h/Z;VX=Math.min(Math.max(VX,VB.x+w/2),VB.x+VB.w-w/2);VY=Math.min(Math.max(VY,VB.y+h/2),VB.y+VB.h-h/2);svg.setAttribute('viewBox',F2(VX-w/2)+' '+F2(VY-h/2)+' '+F2(w)+' '+F2(h));svg.style.touchAction=Z>1?'none':'pan-y'}
+function zoomAt(f,cx,cy){const r=svg.getBoundingClientRect(),fx=cx==null?.5:(cx-r.left)/r.width,fy=cy==null?.5:(cy-r.top)/r.height,w0=VB.w/Z,h0=VB.h/Z,px=VX-w0/2+fx*w0,py=VY-h0/2+fy*h0;Z=Math.min(6,Math.max(1,Z*f));const w1=VB.w/Z,h1=VB.h/Z;VX=px-fx*w1+w1/2;VY=py-fy*h1+h1/2;applyView()}
+document.getElementById('zIn').onclick=()=>zoomAt(1.5);document.getElementById('zOut').onclick=()=>zoomAt(1/1.5);
+document.getElementById('zRes').onclick=()=>{Z=1;VX=VB.x+VB.w/2;VY=VB.y+VB.h/2;applyView()};
+svg.addEventListener('wheel',e=>{if(!(e.ctrlKey||e.metaKey))return;e.preventDefault();zoomAt(e.deltaY<0?1.15:1/1.15,e.clientX,e.clientY)},{passive:false});
+const PT=new Map();let pd0=0;
+svg.addEventListener('pointerdown',e=>{PT.set(e.pointerId,[e.clientX,e.clientY]);try{svg.setPointerCapture(e.pointerId)}catch(_){}pd0=0});
+svg.addEventListener('pointermove',e=>{if(!PT.has(e.pointerId))return;const o=PT.get(e.pointerId),n=[e.clientX,e.clientY],r=svg.getBoundingClientRect();
+if(PT.size===1){if(Z>1){const w=VB.w/Z;VX-=(n[0]-o[0])*w/r.width;VY-=(n[1]-o[1])*(VB.h/Z)/r.height;applyView()}PT.set(e.pointerId,n)}
+else if(PT.size===2){PT.set(e.pointerId,n);const v=[...PT.values()],dist=Math.hypot(v[0][0]-v[1][0],v[0][1]-v[1][1]);if(pd0>0)zoomAt(dist/pd0,(v[0][0]+v[1][0])/2,(v[0][1]+v[1][1])/2);pd0=dist}});
+['pointerup','pointercancel','pointerleave'].forEach(t=>svg.addEventListener(t,e=>{PT.delete(e.pointerId);pd0=0}));
+svg.addEventListener('dblclick',()=>document.getElementById('zRes').click());
+// export PNG
+function exportPNG(){
+ const clone=svg.cloneNode(true),src=svg.querySelectorAll('*'),dst=clone.querySelectorAll('*');
+ const props=['fill','stroke','stroke-width','stroke-dasharray','stroke-dashoffset','opacity','font-size','font-weight','font-family','text-anchor','paint-order','stroke-linecap','stroke-linejoin','stroke-opacity','fill-opacity'];
+ src.forEach((e,i)=>{const cs=getComputedStyle(e),d=dst[i];if(d)props.forEach(q=>d.style.setProperty(q,cs.getPropertyValue(q)))});
+ const t=clone.querySelector('#tool');if(t)t.remove();
+ const bg=getComputedStyle(document.querySelector('.stage')).backgroundColor||'#fff',W=1400,H=Math.max(1,Math.round(W*VB.h/VB.w));
+ clone.setAttribute('xmlns','http://www.w3.org/2000/svg');clone.setAttribute('viewBox',VB.x+' '+VB.y+' '+VB.w+' '+VB.h);clone.setAttribute('width',W);clone.setAttribute('height',H);clone.removeAttribute('style');
+ const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');['x','y','width','height'].forEach((k,i)=>rect.setAttribute(k,[VB.x,VB.y,VB.w,VB.h][i]));rect.setAttribute('fill',bg);clone.insertBefore(rect,clone.firstChild);
+ const blob=new Blob([new XMLSerializer().serializeToString(clone)],{type:'image/svg+xml;charset=utf-8'}),svgURL=URL.createObjectURL(blob),img=new Image();
+ img.onload=()=>{try{const cv=document.createElement('canvas');cv.width=W;cv.height=H;const ctx=cv.getContext('2d');if(!ctx)throw new Error('Canvas unavailable');ctx.drawImage(img,0,0,W,H);const url=cv.toDataURL('image/png');document.getElementById('mimg').src=url;const a=document.getElementById('mdl');a.href=url;const fname=F[fi].n.replace(/[^A-Za-z0-9]+/g,'-')+'.png';a.download=fname;a.onclick=ev=>{ev.preventDefault();cv.toBlob(bl=>{if(bl)saveFile(fname,bl)},'image/png')};document.getElementById('mhint').textContent=tr('saveHint');document.getElementById('modal').classList.add('on')}catch(err){document.getElementById('mhint').textContent='تعذر تجهيز الصورة. جرّب مرة أخرى.'}finally{URL.revokeObjectURL(svgURL)}};
+ img.onerror=()=>{URL.revokeObjectURL(svgURL);document.getElementById('mhint').textContent='تعذر تحويل الرسم إلى صورة. جرّب تحديث الصفحة.';document.getElementById('modal').classList.add('on')};img.src=svgURL;
+}
+document.getElementById('shot').onclick=exportPNG;
+document.getElementById('mclose').onclick=()=>document.getElementById('modal').classList.remove('on');
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')e.target.classList.remove('on')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('modal').classList.remove('on')});
+
+
+// ---- download app / files
+async function saveFile(name,data){
+ try{const blob=data instanceof Blob?data:new Blob([data]),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);return true}catch(e){return null}
+}
+function appSource(){const c=document.documentElement.cloneNode(true);
+const sv=c.querySelector('#s');if(sv){sv.innerHTML='';sv.removeAttribute('viewBox');sv.removeAttribute('style')}
+['listCW','listHW'].forEach(id=>{const e=c.querySelector('#'+id);if(e)e.innerHTML=''});
+const m=c.querySelector('#modal');if(m)m.classList.remove('on');const mi=c.querySelector('#mimg');if(mi)mi.removeAttribute('src');
+c.removeAttribute('data-theme');c.setAttribute('lang','ar');c.setAttribute('dir','rtl');
+c.querySelectorAll('head script,script[src]').forEach(e=>e.remove());
+c.querySelectorAll('.screen').forEach(e=>e.classList.toggle('on',e.id==='tab-draw'));
+return '<!DOCTYPE html>\n'+c.outerHTML}
+async function downloadApp(){const msg=document.getElementById('dlMsg');msg.textContent='…';let html=null;
+try{const r=await fetch(location.href,{credentials:'omit'});if(r.ok){const t=await r.text();if(/<html/i.test(t)&&t.includes('function applyLang'))html=t}}catch(e){}
+if(!html)html=appSource();
+const ok=await saveFile('engineering-app.html',new Blob([html],{type:'text/html'}));msg.textContent=ok===true?tr('dlOk'):ok===false?tr('dlNo'):tr('dlErr')}
+document.getElementById('dlAppBtn').onclick=downloadApp;
+
+// ---- 3D mode: drawing tools
+let mode='2d',token=0,toolG=null,ELS=[],BU=1,BW=200,TS=null;
+const lerp=(a,b,t)=>a+(b-a)*t,F2=n=>n.toFixed(2);
+function frame(dur,fn,my){return new Promise(res=>{const t0=performance.now();const st=now=>{if(my!==token){res(false);return}const t=Math.min(1,Math.max(0,(now-t0)/dur));fn(t);t<1?requestAnimationFrame(st):res(true)};requestAnimationFrame(st)})}
+function toolSVG(o,u){const sw=n=>F2(n*u),op=o.op==null?1:o.op;
+const ln=(p,q,w,c,o2=1)=>'<line x1="'+F2(p[0])+'" y1="'+F2(p[1])+'" x2="'+F2(q[0])+'" y2="'+F2(q[1])+'" stroke="'+c+'" stroke-width="'+sw(w)+'" stroke-linecap="round" opacity="'+o2+'"/>';
+const dotc=(p,r,f,st)=>'<circle cx="'+F2(p[0])+'" cy="'+F2(p[1])+'" r="'+sw(r)+'" fill="'+f+'" stroke="'+(st||'none')+'" stroke-width="'+sw(.4)+'"/>';
+const pen=T=>{const d=[Math.cos(65*D),Math.sin(65*D)],n=[-d[1],d[0]],pt=(k,w)=>F2(T[0]+d[0]*k*u+n[0]*w*u)+','+F2(T[1]+d[1]*k*u+n[1]*w*u);
+return '<polygon points="'+pt(0,0)+' '+pt(5,1.6)+' '+pt(5,-1.6)+'" fill="#e8c48a" stroke="#6b4b1a" stroke-width="'+sw(.25)+'"/><polygon points="'+pt(5,1.6)+' '+pt(24,1.6)+' '+pt(24,-1.6)+' '+pt(5,-1.6)+'" fill="#d9a21b" stroke="#6b4b1a" stroke-width="'+sw(.25)+'"/>'+dotc(T,.8,'#7a1f2b')};
+let s='';
+if(o.type=='compass'){const C=o.C,P=o.P,v=sub(P,C),r=Math.max(len(v),1e-6),Lg=Math.max(r*.95,28*u),h=Math.sqrt(Math.max(Lg*Lg-r*r/4,0)),nv=[-v[1]/r,v[0]/r],H=add(add(C,mul(v,.5)),mul(nv,h)),sh=[1.4*u,-1.4*u],K2=add(H,mul(nv,9*u));
+s+=ln(add(C,sh),add(H,sh),2.4,'#000',.18)+ln(add(P,sh),add(H,sh),2.4,'#000',.18);
+s+=ln(C,H,2.6,'#2f3438')+ln(P,H,2.6,'#2f3438')+ln(C,H,1.3,'#d3dade')+ln(P,H,1.3,'#d3dade');
+s+=ln(H,K2,2.2,'#2f3438')+dotc(K2,2.2,'#7a1f2b','#2f3438')+dotc(H,2.4,'#9aa3aa','#2f3438')+dotc(C,1.1,'#111')+dotc(P,1,'#7a1f2b');}
+else if(o.type=='ruler'){const a=o.a,b=o.b,v=sub(b,a),L=Math.max(len(v),1e-6),dir=mul(v,1/L),nv=[-dir[1],dir[0]],W=18*u,Lr=L+26*u,ed=add(mul(add(a,b),.5),mul(nv,o.off||0));
+const cn=(k,w,ox=0,oy=0)=>{const p=add(add(ed,mul(dir,k)),mul(nv,w));return F2(p[0]+ox)+','+F2(p[1]+oy)},poly=(ox,oy,f,st)=>'<polygon points="'+cn(-Lr/2,0,ox,oy)+' '+cn(Lr/2,0,ox,oy)+' '+cn(Lr/2,W,ox,oy)+' '+cn(-Lr/2,W,ox,oy)+'" fill="'+f+'" stroke="'+st+'" stroke-width="'+sw(.4)+'"/>';
+s+=poly(1.6*u,-1.6*u,'rgba(0,0,0,.18)','none')+poly(0,0,'rgba(245,208,96,.62)','#8a6d12');
+let i=0;for(let k=-Lr/2+3*u;k<Lr/2-2*u;k+=5*u,i++){const p=add(add(ed,mul(dir,k)),mul(nv,0)),q=add(p,mul(nv,(i%5==0?4.5:2.6)*u));s+=ln(p,q,.3,'#6b5410')}
+s+=pen(o.T);}
+else s+=pen(o.T);
+return '<g opacity="'+op+'">'+s+'</g>'}
+function setTool(o){toolG.innerHTML=toolSVG(o,BU)}
+async function runItem(x,my,sc){const e=x.e,it=x.it,u=BU;
+if(it.t=='d'){if(!await frame(200*sc,()=>{},my))return false;e.classList.add('on');return true}
+let kind,m,q,L,pos;
+if(it.t=='c'){kind='compass';m={c:it.p,r:it.r};L=2*Math.PI*it.r;pos=t=>[it.p[0]+it.r*Math.cos(t*2*Math.PI),it.p[1]+it.r*Math.sin(t*2*Math.PI)]}
+else{q=it.q;L=0;for(let i=1;i<q.length;i++)L+=len(sub(q[i],q[i-1]));const n=q.length-1;pos=t=>{const k=t*n,i=Math.min(n-1,Math.floor(k)),f=k-i;return[lerp(q[i][0],q[i+1][0],f),lerp(q[i][1],q[i+1][1],f)]};kind=q.m?'compass':(q.length==2?'ruler':'pencil');m=q.m}
+const dur=Math.max(650,Math.min(2300,L/(170*BW/200)*1000))*sc,start=pos(0);
+if(kind==='compass'){const C=m.c;
+if(TS&&TS.k==='compass'){const C0=TS.C,P0=TS.P;if(!await frame(380*sc,t=>{const z=t*t*(3-2*t);setTool({type:'compass',C:[lerp(C0[0],C[0],z),lerp(C0[1],C[1],z)],P:[lerp(P0[0],start[0],z),lerp(P0[1],start[1],z)]})},my))return false}
+else if(!await frame(300*sc,t=>setTool({type:'compass',C,P:start,op:t}),my))return false;
+if(!await frame(dur,t=>{const P=pos(t);e.style.strokeDashoffset=1-t;setTool({type:'compass',C,P});TS={k:'compass',C,P}},my))return false}
+else if(kind==='ruler'){const a=q[0],b=q[1];
+if(!await frame(330*sc,t=>setTool({type:'ruler',a,b,T:a,off:(1-t)*9*u,op:t}),my))return false;
+if(!await frame(dur,t=>{e.style.strokeDashoffset=1-t;setTool({type:'ruler',a,b,T:pos(t),off:0,op:1})},my))return false;TS={k:'ruler'}}
+else{if(!await frame(300*sc,t=>setTool({type:'pencil',T:start,op:t}),my))return false;
+if(!await frame(dur,t=>{e.style.strokeDashoffset=1-t;setTool({type:'pencil',T:pos(t)})},my))return false;TS={k:'pencil'}}
+return true}
+async function animateStep(my){const list=ELS[cur]||[];TS=null;toolG.innerHTML='';
+list.forEach(x=>{x.e.classList.remove('on');if(x.it.t!='d'){x.e.style.strokeDasharray='1';x.e.style.strokeDashoffset='1';x.e.style.opacity='1'}});
+let est=0;list.forEach(x=>est+=x.it.t=='d'?250:1600);const sc=Math.min(1,13000/Math.max(est,1))*SPD[spd];
+for(const x of list){if(!await runItem(x,my,sc))return false;x.e.style.strokeDasharray='';x.e.style.strokeDashoffset='';x.e.style.opacity='';x.e.classList.add('on')}
+if(list.length){if(!await frame(250,t=>{toolG.style.opacity=1-t},my))return false}
+toolG.innerHTML='';toolG.style.opacity=1;return true}
+function show3(i){token++;const my=token;
+svg.querySelectorAll('[data-s]').forEach(e=>{e.style.strokeDasharray='';e.style.strokeDashoffset='';e.style.opacity=''});
+if(toolG){toolG.innerHTML='';toolG.style.opacity=1}
+show2(i);svg.classList.remove('f');svg.querySelectorAll('.dim').forEach(e=>{if(+e.dataset.s===cur)e.classList.remove('on')});(ELS[cur]||[]).forEach(x=>x.e.classList.remove('on'));
+animateStep(my).then(ok=>{if(!ok||my!==token)return;svg.querySelectorAll('.dim').forEach(e=>{if(+e.dataset.s===cur)e.classList.add('on')});const f=F[fi];if(f.fade&&cur==f.st.length-1)svg.classList.add('f');
+if(timer===true){if(cur>=f.st.length-1)stop();else setTimeout(()=>{if(timer===true&&my===token)show(cur+1)},1400*SPD[spd])}})}
+function show(i){mode==='3d'?show3(i):show2(i)}
+function setMode(m){stop();token++;mode=m;svg.classList.toggle('m3',m==='3d');document.querySelectorAll('#md button').forEach(b=>b.classList.toggle('on',b.dataset.m===m));try{localStorage.setItem('eng-m',m)}catch(e){}build(fi);if(m==='3d'){if(tabNow()==='draw'){timer=true;updatePlayLabel()}else pendingReplay=true}}
+document.querySelectorAll('#md button').forEach(b=>b.onclick=()=>setMode(b.dataset.m));
+function play(){clearInterval(timer);const last=F[fi].st.length-1;if(mode==='3d'){timer=true;updatePlayLabel();show(cur>=last?0:cur+1);return}show(cur>=last?0:cur+1);timer=setInterval(()=>{if(cur>=F[fi].st.length-1){stop();return}show(cur+1)},(reducedMotion?5000:3500)*SPD[spd]);updatePlayLabel()}
+function stop(){clearInterval(timer);timer=null;updatePlayLabel()}
+pl.onclick=()=>timer?stop():play();
+document.getElementById('auto').onclick=()=>timer?stop():play();
+document.getElementById('n').onclick=()=>{stop();show(cur+1)};
+document.getElementById('p').onclick=()=>{stop();show(cur-1)};
+document.getElementById('restart').onclick=()=>{stop();show(0)};
+const LS={get(k,d){try{const v=localStorage.getItem('eng-'+k);return v==null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem('eng-'+k,v)}catch(e){}}};
+let spd='normal',pendingReplay=false;const SPD={slow:1.6,normal:1,fast:.55};
+const weekOf=n=>n.split(' ')[0],WK=[...new Set(F.map(f=>weekOf(f.n)))];
+const tabNow=()=>{const e=document.querySelector('.screen.on');return e?e.id.replace('tab-',''):'draw'};
+let DONE=new Set();
+function saveDone(){LS.set('done',JSON.stringify([...DONE]))}
+function markDone(n,v){if(v===DONE.has(n))return;v?DONE.add(n):DONE.delete(n);saveDone();updateDoneUI();renderLists();markCur()}
+function markCur(){document.querySelectorAll('.figs button').forEach(b=>b.classList.toggle('on',+b.dataset.i===fi))}
+function updateDoneUI(){const b=document.getElementById('doneBtn'),n=F[fi]&&F[fi].n,on=DONE.has(n);b.classList.toggle('on',on);b.textContent=on?tr('done'):tr('notDone');document.getElementById('progD').textContent=tr('progD')(F.filter(f=>DONE.has(f.n)).length,F.length)}
+function renderLists(){['CW','HW'].forEach(t=>{const box=document.getElementById('list'+t);box.innerHTML='';
+WK.filter(w=>w.startsWith(t)).forEach(w=>{const card=document.createElement('div');card.className='wk';const h=document.createElement('div');h.className='wkh';const tot=F.filter(f=>weekOf(f.n)===w),dn=tot.filter(f=>DONE.has(f.n)).length;h.innerHTML=w+' · '+tr('week')(w.slice(t.length))+'<span class="wkc">'+dn+'/'+tot.length+'</span>';card.appendChild(h);
+const grid=document.createElement('div');grid.className='figs';
+F.forEach((f,i)=>{if(weekOf(f.n)!==w)return;const b=document.createElement('button');b.type='button';b.dataset.i=i;b.innerHTML='<span>'+dispName(f.n).replace(/^\S+ · /,'')+'</span><small>'+tr('steps')(f.st.length)+'</small><i class="ck">✓</i>';if(DONE.has(f.n))b.classList.add('done');b.onclick=()=>openFig(i);grid.appendChild(b)});
+card.appendChild(grid);box.appendChild(card)})})}
+function updateFigHead(){const f=F[fi];document.getElementById('figName').textContent=dispName(f.n);document.getElementById('figCount').textContent=(fi+1)+' / '+F.length;LS.set('fig',f.n);markCur();updateDoneUI()}
+function showTab(t){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on',s.id==='tab-'+t));document.querySelectorAll('.tabbar button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
+if(t!=='draw')stop();LS.set('tab',t);if(t==='draw'&&pendingReplay){pendingReplay=false;build(fi);if(mode==='3d'){timer=true;updatePlayLabel()}}window.scrollTo(0,0)}
+function openFig(i){stop();build(i);showTab('draw')}
+function applyTheme(p){const dark=matchMedia('(prefers-color-scheme: dark)').matches,eff=p==='auto'?(dark?'dark':'light'):p;document.documentElement.dataset.theme=eff;document.querySelectorAll('#thm button').forEach(b=>b.classList.toggle('on',b.dataset.t===p));LS.set('theme',p)}
+function setSpd(v){spd=SPD[v]?v:'normal';LS.set('spd',spd);document.querySelectorAll('#spd button').forEach(b=>b.classList.toggle('on',b.dataset.s===spd))}
+document.querySelectorAll('.tabbar button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+document.querySelectorAll('#thm button').forEach(b=>b.onclick=()=>applyTheme(b.dataset.t));
+document.querySelectorAll('#spd button').forEach(b=>b.onclick=()=>setSpd(b.dataset.s));
+document.getElementById('figPrev').onclick=()=>{stop();build((fi-1+F.length)%F.length)};
+document.getElementById('figNext').onclick=()=>{stop();build((fi+1)%F.length)};
+document.getElementById('doneBtn').onclick=()=>markDone(F[fi].n,!DONE.has(F[fi].n));
+document.getElementById('resetP').onclick=()=>{DONE=new Set();saveDone();updateDoneUI();renderLists();markCur()};
+document.getElementById('resetS').onclick=()=>{applyTheme('auto');setSpd('normal');setDims(false);if(mode!=='2d')setMode('2d')};
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(LS.get('theme','auto')==='auto')applyTheme('auto')})}catch(e){}
+document.addEventListener('keydown',e=>{if(tabNow()!=='draw'||e.target.matches('button,input,textarea,select'))return;const nx=lang==='ar'?'ArrowLeft':'ArrowRight',pv=lang==='ar'?'ArrowRight':'ArrowLeft';if(e.key===nx){stop();show(cur+1)}if(e.key===pv){stop();show(cur-1)}if(e.key===' '){e.preventDefault();timer?stop():play()}});
+try{DONE=new Set(JSON.parse(LS.get('done','[]')))}catch(e){DONE=new Set()}
+let f0=F.findIndex(f=>f.n===LS.get('fig',''));if(f0<0)f0=0;fi=f0;
+let PROJ=PROJ0;
+function markProj(){document.querySelectorAll('#prj button').forEach(b=>b.classList.toggle('on',b.dataset.p===PROJ))}
+function setProj(v){PROJ=v==='third'?'third':'first';LS.set('proj',PROJ);OB.forEach(o=>{const i=F.findIndex(f=>f.n===o.n);if(i>=0)F[i]=orthoBuild(o,PROJ)});markProj();renderLists();updateFigHead();if(/4 · /.test(F[fi].n)){stop();build(fi)}}
+document.querySelectorAll('#prj button').forEach(b=>b.onclick=()=>setProj(b.dataset.p));
+function applyLang(l){lang=I18N[l]?l:'ar';LS.set('lang',lang);const R=document.documentElement;R.lang=lang;R.dir=lang==='ar'?'rtl':'ltr';document.title=tr('app');
+document.querySelectorAll('[data-i]').forEach(e=>e.textContent=tr(e.dataset.i));
+document.getElementById('noteDraw').innerHTML=tr('noteDraw');document.getElementById('noteSet').innerHTML=tr('noteSet');
+const fp=document.getElementById('figPrev'),fn=document.getElementById('figNext');fp.textContent=tr('fp');fn.textContent=tr('fn');fp.setAttribute('aria-label',tr('fpA'));fn.setAttribute('aria-label',tr('fnA'));
+document.getElementById('p').textContent=tr('prev');document.getElementById('n').textContent=tr('next');
+svg.setAttribute('aria-label',tr('svgA'));document.querySelector('.progress-track').setAttribute('aria-label',tr('progA'));
+document.querySelectorAll('#lng button').forEach(b=>b.classList.toggle('on',b.dataset.l===lang));
+[['zIn','zin'],['zOut','zout'],['zRes','zres']].forEach(([i,k])=>{const e=document.getElementById(i);e.setAttribute('aria-label',tr(k));e.title=tr(k)});
+renderLists();updateFigHead();setCaption();updatePlayLabel();markProj()}
+document.querySelectorAll('#lng button').forEach(b=>b.onclick=()=>applyLang(b.dataset.l));
+applyLang(LS.get('lang','ar'));applyTheme(LS.get('theme','auto'));setSpd(LS.get('spd','normal'));
+mode=LS.get('m','2d')==='3d'?'3d':'2d';svg.classList.toggle('m3',mode==='3d');document.querySelectorAll('#md button').forEach(b=>b.classList.toggle('on',b.dataset.m===mode));setDims(LS.get('d','0')==='1');
+const t0=['draw','cw','hw','set'].includes(LS.get('tab','draw'))?LS.get('tab','draw'):'draw';
+stop();build(f0);showTab(t0);if(t0==='draw'&&mode==='3d'){timer=true;updatePlayLabel()}
+</script></main><script>
+(function(){
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
+var dip=null,standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+var TX={ar:{t:'تثبيت كتطبيق',d:'يتثبت على جهازك ويشتغل أوفلاين كأنه تطبيق.',b:'📲 تثبيت',ios:'على آيفون: اضغط زر المشاركة ثم "إضافة إلى الشاشة الرئيسية".'},en:{t:'Install as an app',d:'Installs on your device and works offline like an app.',b:'📲 Install',ios:'On iPhone: tap the Share button, then "Add to Home Screen".'}};
+function paint(){var l=document.documentElement.lang==='en'?'en':'ar',r=document.getElementById('installRow');if(!r||standalone)return;var ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+if(dip||ios){r.style.display='';document.getElementById('instT').textContent=TX[l].t;document.getElementById('instD').textContent=dip?TX[l].d:TX[l].ios;var b=document.getElementById('installBtn');b.style.display=dip?'':'none';b.textContent=TX[l].b}}
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dip=e;paint()});
+window.addEventListener('appinstalled',function(){dip=null;var r=document.getElementById('installRow');if(r)r.style.display='none'});
+document.addEventListener('click',function(e){if(e.target&&e.target.id==='installBtn'&&dip){dip.prompt();dip.userChoice.finally(function(){dip=null;paint()})}});
+new MutationObserver(paint).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});paint();
+})();
+</script>
+</body></html>
